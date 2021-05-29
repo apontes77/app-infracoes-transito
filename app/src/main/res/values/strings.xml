@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MainActivity</string>
+    <string name="description_image" />
+    <string name="text_titulo" />
+    <string name="text_descricao" />
+    <string name="adicionar">adicionar</string>
+</resources>
