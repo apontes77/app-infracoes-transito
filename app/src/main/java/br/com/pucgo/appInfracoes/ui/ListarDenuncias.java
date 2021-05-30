@@ -8,24 +8,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -38,7 +30,7 @@ import br.com.pucgo.appInfracoes.R;
 import br.com.pucgo.appInfracoes.modelos.Denuncia;
 import br.com.pucgo.appInfracoes.ui.adapter.ListaDenunciasAdapter;
 
-public class ListarDenuncias extends AppCompatActivity {
+public class ListarDenuncias extends AppCompatActivity implements ListaDenunciasAdapter.OnNoteListener {
 
     RecyclerView recyclerView;
     TextView tituloDenuncia;
@@ -84,7 +76,7 @@ public class ListarDenuncias extends AppCompatActivity {
         fab.setOnClickListener(initiateActivityManipularDenuncia());
         loadImg();
 
-        ListaDenunciasAdapter adapter = new ListaDenunciasAdapter(this, denuncias);
+        ListaDenunciasAdapter adapter = new ListaDenunciasAdapter(this, denuncias, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -94,7 +86,7 @@ public class ListarDenuncias extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ManipularDenuncia.class);
+                Intent i = new Intent(getApplicationContext(), InserirDenuncia.class);
                 startActivity(i);
             }
         };
@@ -137,4 +129,9 @@ public class ListarDenuncias extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onNoteClick(int position) {
+        Intent intent = new Intent(this, EditarExcluirDenuncia.class);
+        startActivity(intent);
+    }
 }

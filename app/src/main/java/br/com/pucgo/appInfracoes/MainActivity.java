@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import br.com.pucgo.appInfracoes.ui.LoginActivity;
-import br.com.pucgo.appInfracoes.ui.ManipularDenuncia;
 
 public class MainActivity extends AppCompatActivity {
 

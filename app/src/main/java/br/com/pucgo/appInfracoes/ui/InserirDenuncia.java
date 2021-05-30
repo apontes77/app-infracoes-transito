@@ -16,12 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import br.com.pucgo.appInfracoes.R;
 
-public class ManipularDenuncia extends AppCompatActivity {
+public class InserirDenuncia extends AppCompatActivity {
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_inserir_denuncia);
     }
 }
