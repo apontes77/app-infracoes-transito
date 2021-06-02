@@ -13,7 +13,7 @@ public class RestApiClient{
 
     public static Retrofit retrofit = null;
 
-    public static final String BASE_URL = "http://10.0.2.2:8081/api/v1";
+    public static final String BASE_URL = "http://10.0.2.2:8081/api/v1/";
 
     public static Retrofit getClient() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()

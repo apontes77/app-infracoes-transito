@@ -16,14 +16,14 @@ import retrofit2.http.Query;
 
 public interface RestApiInterfaceUsuario {
     @Headers("Content-Type: application/json")
-    @POST("/usuario")
+    @POST("usuarios/salvar")
     Call<Usuario> inserirUsuario(
             @Body Usuario usuario);
 
-    @GET("/usuario")
+    @GET("/usuarios")
     Call<List<Usuario>> listarUsuarios ();
 
-    @GET("/usuario/{id}")
+    @GET("/usuarios/{id}")
     Call<Usuario> obterUsuarios(@Query("id") Integer id);
 }
 
