@@ -26,4 +26,9 @@ public class ValidacoesDeUsuario {
         }
         return matcher.matches();
     }
+
+    public static boolean validarSenha(String senhaInserida) {
+        Matcher matcher = patternSenha.matcher(senhaInserida);
+        return matcher.matches();
+    }
 }

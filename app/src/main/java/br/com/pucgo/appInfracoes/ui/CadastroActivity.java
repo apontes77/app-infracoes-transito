@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +56,9 @@ public class CadastroActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (ValidacoesDeUsuario.validarEmail(email_cadastro.getText().toString())
                         && ValidacoesDeUsuario.validarSenha(senha_cadastro.getText().toString(), senha_repetida_cadastro.getText().toString())) {
-                    usuario = new Usuario(email_cadastro.getText().toString(), senha_cadastro.getText().toString());
+                    String email = email_cadastro.getText().toString();
+                    String senha = senha_cadastro.getText().toString();
+                    usuario = new Usuario().builder().login(email).senha(senha).build();
                     inserirUsuarioApi(usuario);
                 } else {
                     GeraToast.criaToastCurto(getApplicationContext(), "Email ou senha inválidos! Tente novamente!");
@@ -70,17 +73,22 @@ public class CadastroActivity extends AppCompatActivity {
         chamadaInserirUsuario.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                if (response.isSuccessful()) {
-                    GeraToast.criaToastCurto(getApplicationContext(), response.body().toString());
+                Log.v("resp", response.body().toString());
+
+                Usuario userResponse = response.body();
+                if (response.isSuccessful() && userResponse !=null) {
+                    GeraToast.criaToastLongo(getApplicationContext(), "Cadastro realizado com sucesso!");
                     redirecionaParaTelaLogin();
                 }
                 else {
-                    GeraToast.criaToastCurto(getApplicationContext(), "Algo deu errado com o servidor! Tente novamente.");
+                    GeraToast.criaToastCurto(getApplicationContext(), "Não foi possível cadastrar! Tente de novo!");
                 }
             }
 
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.v("fail", t.toString());
+
                 GeraToast.criaToastCurto(getApplicationContext(), "Sem conexão! Tente novamente.");
                 call.cancel();
             }

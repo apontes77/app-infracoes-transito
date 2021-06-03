@@ -1,28 +1,19 @@
 package br.com.pucgo.appInfracoes.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,45 +27,38 @@ public class ListarDenuncias extends AppCompatActivity implements ListaDenuncias
     TextView tituloDenuncia;
     TextView descricaoDenuncia;
     FloatingActionButton fab;
-    private final String TAG = "ERRO AO CARREGAR";
+    ImageView imagem;
     List<Denuncia> denuncias = new ArrayList<>();
-    private final Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_denuncias);
-        denuncias.add(new Denuncia("RACHADOR",
-                    "rachador na av portugal",
-                    "https://imagens-app-infracoes.s3.us-east-2.amazonaws.com/fila-carros.jpg"));
-        denuncias.add(new Denuncia("RACHADOR",
-                "rachador na av portugal",
-                "https://imagens-app-infracoes.s3.us-east-2.amazonaws.com/fila-carros.jpg"));
-        denuncias.add(new Denuncia("RACHADOR",
-                "rachador na av portugal",
-                "https://imagens-app-infracoes.s3.us-east-2.amazonaws.com/fila-carros.jpg"));
-        denuncias.add(new Denuncia("RACHADOR",
-                "rachador na av portugal",
-                "https://imagens-app-infracoes.s3.us-east-2.amazonaws.com/fila-carros.jpg"));
-        denuncias.add(new Denuncia("RACHADOR",
-                "rachador na av portugal",
-                "https://imagens-app-infracoes.s3.us-east-2.amazonaws.com/fila-carros.jpg"));
-        denuncias.add(new Denuncia("RACHADOR",
-                "rachador na av portugal",
-                "https://imagens-app-infracoes.s3.us-east-2.amazonaws.com/fila-carros.jpg"));
-        denuncias.add(new Denuncia("RACHADOR",
-                "rachador na av portugal",
-                "https://imagens-app-infracoes.s3.us-east-2.amazonaws.com/fila-carros.jpg"));
-        denuncias.add(new Denuncia("RACHADOR",
-                "rachador na av portugal",
-                "https://imagens-app-infracoes.s3.us-east-2.amazonaws.com/fila-carros.jpg"));
-
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_listarDenuncias);
         tituloDenuncia = (TextView) findViewById(R.id.textView_titulo);
         descricaoDenuncia = (TextView) findViewById(R.id.textView_descricao);
+        imagem = (ImageView) findViewById(R.id.imageView_1);
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(initiateActivityManipularDenuncia());
-        loadImg();
+
+        denuncias.add(new Denuncia("RACHADOR",
+                "rachador na av portugal",""));
+        denuncias.add(new Denuncia("RACHADOR",
+                "rachador na av portugal",""));
+        denuncias.add(new Denuncia("RACHADOR",
+                "rachador na av portugal",""));
+        denuncias.add(new Denuncia("RACHADOR",
+                "rachador na av portugal",""));
+        denuncias.add(new Denuncia("RACHADOR",
+                "rachador na av portugal",""));
+        denuncias.add(new Denuncia("RACHADOR",
+                "rachador na av portugal",""));
+        denuncias.add(new Denuncia("RACHADOR",
+                "rachador na av portugal",""));
+        denuncias.add(new Denuncia("RACHADOR",
+                "rachador na av portugal",""));
+
 
         ListaDenunciasAdapter adapter = new ListaDenunciasAdapter(this, denuncias, this);
         recyclerView.setAdapter(adapter);
@@ -91,43 +75,6 @@ public class ListarDenuncias extends AppCompatActivity implements ListaDenuncias
             }
         };
     }
-
-    public void loadImg() {
-        new Thread() {
-            @Override
-            public void run() {
-                Bitmap img = null;
-
-                for (Denuncia denuncia:denuncias) {
-                    try {
-                        URL url = new URL(denuncia.getUrlFoto());
-                        HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
-                        InputStream input = conexao.getInputStream();
-                        img = BitmapFactory.decodeStream(input);
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                final Bitmap imgAux = img;
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ImageView imageView = new ImageView(getBaseContext());
-                        imageView.setImageBitmap(imgAux);
-
-                        ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.constraint_items);
-                        cl.addView(imageView);
-                    }
-                });
-
-            }
-        }.start();
-    }
-
 
     @Override
     public void onNoteClick(int position) {

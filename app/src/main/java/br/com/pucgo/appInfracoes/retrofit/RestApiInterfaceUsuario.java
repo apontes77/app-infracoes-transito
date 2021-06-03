@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.pucgo.appInfracoes.modelos.Denuncia;
 import br.com.pucgo.appInfracoes.modelos.Usuario;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -16,14 +17,15 @@ import retrofit2.http.Query;
 
 public interface RestApiInterfaceUsuario {
     @Headers("Content-Type: application/json")
-    @POST("usuarios/salvar")
+    @POST("api/v1/usuarios/salvar")
     Call<Usuario> inserirUsuario(
             @Body Usuario usuario);
 
-    @GET("/usuarios")
+    @GET("api/v1/usuarios")
     Call<List<Usuario>> listarUsuarios ();
 
-    @GET("/usuarios/{id}")
-    Call<Usuario> obterUsuarios(@Query("id") Integer id);
+    @Headers("Content-Type: application/json")
+    @POST("api/v1/usuarios/login")
+    Call<ResponseBody> loginUsuario(@Body Usuario usuario);
 }
 

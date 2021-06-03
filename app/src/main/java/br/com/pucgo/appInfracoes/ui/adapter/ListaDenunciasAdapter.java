@@ -2,6 +2,7 @@ package br.com.pucgo.appInfracoes.ui.adapter;
 
 import android.content.Context;
 import android.media.Image;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +45,10 @@ public class ListaDenunciasAdapter extends RecyclerView.Adapter<ListaDenunciasAd
     public void onBindViewHolder(@NonNull @NotNull ListaDenunciasAdapter.ViewHolder holder, int position) {
         holder.titulo.setText(denuncias.get(position).getTitulo());
         holder.descricao.setText(denuncias.get(position).getDescricao());
-
+      Picasso
+            .get()
+            .load("https://app-infracoes-transito.s3.us-east-2.amazonaws.com/meliante.jpg")
+            .into(holder.foto);
     }
 
     @Override
