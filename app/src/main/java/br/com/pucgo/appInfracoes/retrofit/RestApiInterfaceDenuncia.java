@@ -16,21 +16,21 @@ import retrofit2.http.Query;
 public interface RestApiInterfaceDenuncia {
 
     @Headers("Content-Type: application/json")
-    @POST("/denuncias")
-    Call<Denuncia> inserirDenuncias(
+    @POST("denuncias")
+    Call<Denuncia> inserirDenuncia(
             @Body Denuncia denuncia);
 
     @Headers("Content-Type: application/json")
-    @DELETE("/denuncias/{id}")
+    @DELETE("denuncias/{id}")
     Call<Void> excluirDenuncia (@Path("id") Integer id);
 
-    @PATCH("/denuncias")
+    @PATCH("denuncias")
     Call<Void> atualizarDenuncia (@Body Denuncia denuncia);
 
-    @GET("/denuncias")
+    @GET("denuncias")
     Call<List<Denuncia>> listarDenuncias ();
 
-    @GET("/denuncias/{id}")
+    @GET("denuncias/{id}")
     Call<Denuncia> obterDenuncia(@Query("id") Integer id);
 }
 

@@ -1,79 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:orientation="vertical"
     tools:context=".ui.InserirDenuncia">
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="35dp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Título da Infração"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_titulo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="55dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Descrição da Infração"/>
+        android:text="Título"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_descricao"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_titulo"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
-
+            android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="12dp"/>
+        android:layout_height="wrap_content"
+        android:text="Descrição"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_Descricao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <ImageView
+        android:id="@+id/imageView_carregarImagem"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="horizontal">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/loadimage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:text="Procurar Imagem"/>
+        <Button
+            android:id="@+id/button_carregarImagem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Carregar Imagem"
+            android:layout_gravity="center"/>
 
         <Space
-            android:layout_width="12dp"
-            android:layout_height="match_parent"/>
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_cadastrarDenuncia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enviar Infração"/>
+        <Button
+            android:id="@+id/button_enviarDenuncia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Enviar Infração"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
+
 
 </LinearLayout>
