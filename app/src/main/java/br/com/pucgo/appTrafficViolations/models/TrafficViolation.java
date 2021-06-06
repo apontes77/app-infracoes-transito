@@ -1,4 +1,4 @@
-package br.com.pucgo.appInfracoes.modelos;
+package br.com.pucgo.appTrafficViolations.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Builder
-public class Denuncia {
-    public String titulo;
-    public String descricao;
-    public String urlFoto;
+public class TrafficViolation {
+    public String title;
+    public String description;
 }

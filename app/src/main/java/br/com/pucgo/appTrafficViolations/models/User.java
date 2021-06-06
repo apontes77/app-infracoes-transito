@@ -1,4 +1,4 @@
-package br.com.pucgo.appInfracoes.modelos;
+package br.com.pucgo.appTrafficViolations.models;
 
 
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Usuario {
+public class User {
     private String login;
-    private String senha;
+    private String password;
 }

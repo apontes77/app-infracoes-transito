@@ -1,4 +1,4 @@
-package br.com.pucgo.appInfracoes.ui;
+package br.com.pucgo.appTrafficViolations.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,31 +8,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import br.com.pucgo.appInfracoes.R;
-import br.com.pucgo.appInfracoes.modelos.Usuario;
-import br.com.pucgo.appInfracoes.retrofit.RestApiClient;
-import br.com.pucgo.appInfracoes.retrofit.RestApiInterfaceUsuario;
-import br.com.pucgo.appInfracoes.utilidades.GeraToast;
-import br.com.pucgo.appInfracoes.validacoes.ValidacoesDeUsuario;
+import br.com.pucgo.appTrafficViolations.R;
+import br.com.pucgo.appTrafficViolations.models.User;
+import br.com.pucgo.appTrafficViolations.retrofit.RestApiClient;
+import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceUser;
+import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
+import br.com.pucgo.appTrafficViolations.validations.UserValidations;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CadastroActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
-    Button btn_cadastro_usuario;
-    EditText email_cadastro;
-    EditText senha_cadastro;
-    EditText senha_repetida_cadastro;
-    RestApiInterfaceUsuario apiServiceUsuario;
-    Usuario usuario;
+    private Button btn_cadastro_usuario;
+    private EditText email_cadastro;
+    private EditText senha_cadastro;
+    private EditText senha_repetida_cadastro;
+    private RestApiInterfaceUser apiServiceUsuario;
+    private User user;
 
 
     @Override
@@ -43,7 +39,7 @@ public class CadastroActivity extends AppCompatActivity {
         email_cadastro = (EditText) findViewById(R.id.edt_Email_cadastro);
         senha_cadastro = (EditText) findViewById(R.id.edt_Senha_cadastro);
         senha_repetida_cadastro = (EditText) findViewById(R.id.edt_Senha_repetida_cadastro);
-        apiServiceUsuario = RestApiClient.getClient().create(RestApiInterfaceUsuario.class);
+        apiServiceUsuario = RestApiClient.getClient().create(RestApiInterfaceUser.class);
 
         btn_cadastro_usuario = (Button) findViewById(R.id.btn_cadastro_usuario);
         btn_cadastro_usuario.setOnClickListener(clickCadastroUsuario());
@@ -54,42 +50,42 @@ public class CadastroActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ValidacoesDeUsuario.validarEmail(email_cadastro.getText().toString())
-                        && ValidacoesDeUsuario.validarSenha(senha_cadastro.getText().toString(), senha_repetida_cadastro.getText().toString())) {
+                if (UserValidations.validateEmail(email_cadastro.getText().toString())
+                        && UserValidations.validatePassword(senha_cadastro.getText().toString(), senha_repetida_cadastro.getText().toString())) {
                     String email = email_cadastro.getText().toString();
                     String senha = senha_cadastro.getText().toString();
-                    usuario = new Usuario().builder().login(email).senha(senha).build();
-                    inserirUsuarioApi(usuario);
+                    user = new User().builder().login(email).password(senha).build();
+                    inserirUsuarioApi(user);
                 } else {
-                    GeraToast.criaToastCurto(getApplicationContext(), "Email ou senha inválidos! Tente novamente!");
+                    GenerateToast.createShortToast(getApplicationContext(), "Email ou senha inválidos! Tente novamente!");
 
                 }
             }
         };
     }
 
-    public void inserirUsuarioApi(Usuario usuario) {
-        Call<Usuario> chamadaInserirUsuario = apiServiceUsuario.inserirUsuario(usuario);
-        chamadaInserirUsuario.enqueue(new Callback<Usuario>() {
+    public void inserirUsuarioApi(User user) {
+        Call<User> chamadaInserirUsuario = apiServiceUsuario.insertUser(user);
+        chamadaInserirUsuario.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 Log.v("resp", response.body().toString());
 
-                Usuario userResponse = response.body();
+                User userResponse = response.body();
                 if (response.isSuccessful() && userResponse !=null) {
-                    GeraToast.criaToastLongo(getApplicationContext(), "Cadastro realizado com sucesso!");
+                    GenerateToast.createLongToast(getApplicationContext(), "Cadastro realizado com sucesso!");
                     redirecionaParaTelaLogin();
                 }
                 else {
-                    GeraToast.criaToastCurto(getApplicationContext(), "Não foi possível cadastrar! Tente de novo!");
+                    GenerateToast.createShortToast(getApplicationContext(), "Não foi possível cadastrar! Tente de novo!");
                 }
             }
 
             @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Log.v("fail", t.toString());
 
-                GeraToast.criaToastCurto(getApplicationContext(), "Sem conexão! Tente novamente.");
+                GenerateToast.createShortToast(getApplicationContext(), "Sem conexão! Tente novamente.");
                 call.cancel();
             }
         });

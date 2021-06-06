@@ -1,7 +1,4 @@
-package br.com.pucgo.appInfracoes.retrofit;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+package br.com.pucgo.appTrafficViolations.retrofit;
 
 import java.util.concurrent.TimeUnit;
 

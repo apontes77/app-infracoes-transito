@@ -1,4 +1,4 @@
-package br.com.pucgo.appInfracoes;
+package br.com.pucgo.appTrafficViolations;
 
 import android.content.Context;
 

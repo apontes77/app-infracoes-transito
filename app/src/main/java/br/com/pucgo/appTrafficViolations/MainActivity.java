@@ -1,4 +1,4 @@
-package br.com.pucgo.appInfracoes;
+package br.com.pucgo.appTrafficViolations;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import br.com.pucgo.appInfracoes.ui.LoginActivity;
+import br.com.pucgo.appTrafficViolations.ui.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 

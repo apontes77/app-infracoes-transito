@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.com.pucgo.appInfracoes">
+    package="br.com.pucgo.appTrafficViolations">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -11,22 +11,30 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.MainActivity">
-        <activity android:name=".ui.EditarExcluirDenuncia"></activity>
-        <activity android:name=".ui.CadastroActivity" />
-        <activity android:name=".ui.LoginActivity" >
+        android:theme="@style/Theme.MainActivity"
+        android:usesCleartextTraffic="true">
 
-        </activity>
-        <activity android:name=".ui.InserirDenuncia" >
+        <activity android:name="br.com.pucgo.appTrafficViolations.utilities.ErrorActivity"
+            android:label="Algo de Errado!"
+            android:parentActivityName="br.com.pucgo.appTrafficViolations.ui.ListTrafficViolation"/>
+        <activity
+            android:name="br.com.pucgo.appTrafficViolations.utilities.SucessActivity"
+            android:label="Tudo Ok!"
+            android:parentActivityName="br.com.pucgo.appTrafficViolations.ui.ListTrafficViolation"/>
+        <activity android:name="br.com.pucgo.appTrafficViolations.ui.EditAndDeleteTrafficViolation" />
+        <activity android:name="br.com.pucgo.appTrafficViolations.ui.RegisterActivity" />
+        <activity android:name="br.com.pucgo.appTrafficViolations.ui.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ListarDenuncias"/>
-        <activity android:name=".MainActivity" />
+        <activity android:name="br.com.pucgo.appTrafficViolations.ui.InsertTrafficViolation">
+
+        </activity>
+        <activity android:name="br.com.pucgo.appTrafficViolations.ui.ListTrafficViolation" />
+        <activity android:name="br.com.pucgo.appTrafficViolations.MainActivity" />
     </application>
 
 </manifest>
