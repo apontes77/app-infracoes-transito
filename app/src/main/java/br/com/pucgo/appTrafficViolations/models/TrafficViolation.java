@@ -1,5 +1,7 @@
 package br.com.pucgo.appTrafficViolations.models;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +14,9 @@ import lombok.Setter;
 @Setter
 @Builder
 public class TrafficViolation {
-    public String title;
-    public String description;
+    private String title;
+    private String description;
+    private LocalDate dateOfOccurrenceInfraction;
+    private Double violationDistance;
+    private Double proposalAmountTrafficTicket;
 }

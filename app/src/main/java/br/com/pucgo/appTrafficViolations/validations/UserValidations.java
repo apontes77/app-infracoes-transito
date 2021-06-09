@@ -3,11 +3,16 @@ package br.com.pucgo.appTrafficViolations.validations;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * VALIDA UM EMAIL COM O FORMATO MINIMO SENDO: x@x.xx.
+ *
+ * VALIDA SENHA COM NO MINIMO OITO CARACTERES, CONTENDO PELO MENOS UMA LETRA MAIUSCULA, UMA MINUSCULA E UM NUMERO.
+ */
+
 public class UserValidations {
 
     private static final String EMAIL_PATTERN =
-            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     private static final String PASSWORD_PATTERN ="^(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
 
