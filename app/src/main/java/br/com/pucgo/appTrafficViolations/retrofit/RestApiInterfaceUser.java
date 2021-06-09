@@ -13,8 +13,7 @@ import retrofit2.http.POST;
 public interface RestApiInterfaceUser {
     @Headers("Content-Type: application/json")
     @POST("api/v1/users/save")
-    Call<User> insertUser(
-            @Body User user);
+    Call<User> insertUser(@Body User user);
 
     @GET("api/v1/users")
     Call<List<User>> listUsers();

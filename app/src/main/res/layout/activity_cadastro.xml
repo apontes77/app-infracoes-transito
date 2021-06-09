@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/edt_Email_cadastro"
+                        android:id="@+id/edt_Email_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Email"
@@ -46,11 +46,24 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edt_cpf_register"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="CPF"
+                        android:imeOptions="actionDone"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
 
                     <EditText
-                        android:id="@+id/edt_Senha_cadastro"
+                        android:id="@+id/edt_password_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Senha"
@@ -64,7 +77,7 @@
                     android:layout_marginTop="5dp">
 
                     <EditText
-                        android:id="@+id/edt_Senha_repetida_cadastro"
+                        android:id="@+id/edt_repeated_password_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Repita a Senha"
@@ -83,10 +96,10 @@
                 android:weightSum="1">
 
                 <Button
-                    android:id="@+id/btn_cadastro_usuario"
+                    android:id="@+id/btn_user_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Enviar Dados" />
+                    android:text="Enviar" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

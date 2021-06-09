@@ -7,18 +7,34 @@
     android:orientation="vertical"
     tools:context=".ui.InsertTrafficViolation">
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Título"/>
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_titulo"
+            android:id="@+id/edt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:text="Título"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_Description"
+            android:text="Descrição"
+            android:inputType="textMultiLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -27,24 +43,37 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"/>
 
-    <TextView
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Descrição"/>
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInputEditText_violationDistance_noEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:text="Distância aproximada do ocorrido"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_Descricao"
+            android:id="@+id/txtInputEditText_proposalPrice_noEdit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:text="Proposta de valor para a multa"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
     <ImageView
-        android:id="@+id/imageView_carregarImagem"
+        android:id="@+id/imageView_loadImage"
         android:layout_width="150dp"
         android:layout_height="250dp"
         android:layout_gravity="center"/>
@@ -55,7 +84,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_carregarImagem"
+            android:id="@+id/button_loadImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,7 +96,7 @@
             android:layout_height="wrap_content"/>
 
         <Button
-            android:id="@+id/button_enviarDenuncia"
+            android:id="@+id/button_sendViolation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

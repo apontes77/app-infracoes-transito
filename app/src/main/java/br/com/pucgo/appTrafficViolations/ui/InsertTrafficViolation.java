@@ -46,11 +46,11 @@ public class InsertTrafficViolation extends AppCompatActivity {
         setContentView(R.layout.activity_inserir_denuncia);
         apiServiceDenuncia = RestApiClient.getClient().create(RestApiInterfaceTrafficViolation.class);
 
-        edt_titulo = (EditText) findViewById(R.id.edt_titulo);
-        edt_descricao = (EditText) findViewById(R.id.edt_Descricao);
-        imageView = (ImageView) findViewById(R.id.imageView_carregarImagem);
-        botaoCarregarImagem = (Button) findViewById(R.id.button_carregarImagem);
-        botaoEnviarInfracao = (Button) findViewById(R.id.button_enviarDenuncia);
+        edt_titulo = (EditText) findViewById(R.id.edt_title);
+        edt_descricao = (EditText) findViewById(R.id.edt_Description);
+        imageView = (ImageView) findViewById(R.id.imageView_loadImage);
+        botaoCarregarImagem = (Button) findViewById(R.id.button_loadImage);
+        botaoEnviarInfracao = (Button) findViewById(R.id.button_sendViolation);
 
         botaoCarregarImagem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +77,7 @@ public class InsertTrafficViolation extends AppCompatActivity {
         Gson gson = new Gson();
 
        // Bitmap imagemBinario = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        byte[] imageBinary = BinaryBytes.getResourceInBytes(this, R.id.imageView_carregarImagem);
+        byte[] imageBinary = BinaryBytes.getResourceInBytes(this, R.id.imageView_loadImage);
         RequestBody requestBodyFile = RequestBody.create(MediaType.parse("image/png"), imageBinary);
 
         Call<TrafficViolation> enviarInfracao = apiServiceDenuncia.insertTrafficViolation(gson.toJson(trafficViolation), requestBodyFile);

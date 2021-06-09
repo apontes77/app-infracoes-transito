@@ -23,39 +23,38 @@ import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private Button btn_cadastro_usuario;
-    private EditText email_cadastro;
-    private EditText senha_cadastro;
-    private EditText senha_repetida_cadastro;
-    private RestApiInterfaceUser apiServiceUsuario;
+    private Button btn_user_register;
+    private EditText email_register;
+    private EditText password_register;
+    private EditText repeated_password_register;
+    private RestApiInterfaceUser apiUserService;
     private User user;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
 
-        email_cadastro = (EditText) findViewById(R.id.edt_Email_cadastro);
-        senha_cadastro = (EditText) findViewById(R.id.edt_Senha_cadastro);
-        senha_repetida_cadastro = (EditText) findViewById(R.id.edt_Senha_repetida_cadastro);
-        apiServiceUsuario = RestApiClient.getClient().create(RestApiInterfaceUser.class);
+        email_register = (EditText) findViewById(R.id.edt_Email_register);
+        password_register = (EditText) findViewById(R.id.edt_password_register);
+        repeated_password_register = (EditText) findViewById(R.id.edt_repeated_password_register);
+        apiUserService = RestApiClient.getClient().create(RestApiInterfaceUser.class);
 
-        btn_cadastro_usuario = (Button) findViewById(R.id.btn_cadastro_usuario);
-        btn_cadastro_usuario.setOnClickListener(clickCadastroUsuario());
+        btn_user_register = (Button) findViewById(R.id.btn_user_register);
+        btn_user_register.setOnClickListener(userRegister());
     }
 
     @NotNull
-    private View.OnClickListener clickCadastroUsuario() {
+    private View.OnClickListener userRegister() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (UserValidations.validateEmail(email_cadastro.getText().toString())
-                        && UserValidations.validatePassword(senha_cadastro.getText().toString(), senha_repetida_cadastro.getText().toString())) {
-                    String email = email_cadastro.getText().toString();
-                    String senha = senha_cadastro.getText().toString();
+                if (UserValidations.validateEmail(email_register.getText().toString())
+                        && UserValidations.validatePassword(password_register.getText().toString(), repeated_password_register.getText().toString())) {
+                    String email = email_register.getText().toString();
+                    String senha = password_register.getText().toString();
                     user = new User().builder().login(email).password(senha).build();
-                    inserirUsuarioApi(user);
+                    insertUserAPI(user);
                 } else {
                     GenerateToast.createShortToast(getApplicationContext(), "Email ou senha inválidos! Tente novamente!");
 
@@ -64,9 +63,9 @@ public class RegisterActivity extends AppCompatActivity {
         };
     }
 
-    public void inserirUsuarioApi(User user) {
-        Call<User> chamadaInserirUsuario = apiServiceUsuario.insertUser(user);
-        chamadaInserirUsuario.enqueue(new Callback<User>() {
+    public void insertUserAPI(User user) {
+        Call<User> callInsertUser = apiUserService.insertUser(user);
+        callInsertUser.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 Log.v("resp", response.body().toString());
@@ -74,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                 User userResponse = response.body();
                 if (response.isSuccessful() && userResponse !=null) {
                     GenerateToast.createLongToast(getApplicationContext(), "Cadastro realizado com sucesso!");
-                    redirecionaParaTelaLogin();
+                    redirectsToLoginScreen();
                 }
                 else {
                     GenerateToast.createShortToast(getApplicationContext(), "Não foi possível cadastrar! Tente de novo!");
@@ -89,17 +88,17 @@ public class RegisterActivity extends AppCompatActivity {
                 call.cancel();
             }
         });
-        limpaCampos();
+        cleanFields();
     }
 
-    private void redirecionaParaTelaLogin() {
-        Intent voltaParaTelaDeLogin = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(voltaParaTelaDeLogin);
+    private void redirectsToLoginScreen() {
+        Intent backToLoginScreen = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(backToLoginScreen);
     }
 
-    public void limpaCampos() {
-        email_cadastro.setText("");
-        senha_cadastro.setText("");
-        senha_repetida_cadastro.setText("");
+    public void cleanFields() {
+        email_register.setText("");
+        password_register.setText("");
+        repeated_password_register.setText("");
     }
 }
