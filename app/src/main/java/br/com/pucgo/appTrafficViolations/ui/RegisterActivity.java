@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+
 import org.jetbrains.annotations.NotNull;
 
 import br.com.pucgo.appTrafficViolations.R;
@@ -25,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Button btn_user_register;
     private EditText email_register;
+    private EditText cpf_register;
     private EditText password_register;
     private EditText repeated_password_register;
     private RestApiInterfaceUser apiUserService;
@@ -36,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro);
 
         email_register = (EditText) findViewById(R.id.edt_Email_register);
+        cpf_register = (EditText) findViewById(R.id.edt_cpf_register);
         password_register = (EditText) findViewById(R.id.edt_password_register);
         repeated_password_register = (EditText) findViewById(R.id.edt_repeated_password_register);
         apiUserService = RestApiClient.getClient().create(RestApiInterfaceUser.class);
@@ -53,7 +57,8 @@ public class RegisterActivity extends AppCompatActivity {
                         && UserValidations.validatePassword(password_register.getText().toString(), repeated_password_register.getText().toString())) {
                     String email = email_register.getText().toString();
                     String senha = password_register.getText().toString();
-                    user = new User().builder().login(email).password(senha).build();
+                    String cpf = cpf_register.getText().toString();
+                    user = new User().builder().login(email).password(senha).CPF(cpf).build();
                     insertUserAPI(user);
                 } else {
                     GenerateToast.createShortToast(getApplicationContext(), "Email ou senha inválidos! Tente novamente!");
@@ -66,9 +71,11 @@ public class RegisterActivity extends AppCompatActivity {
     public void insertUserAPI(User user) {
         Call<User> callInsertUser = apiUserService.insertUser(user);
         callInsertUser.enqueue(new Callback<User>() {
+            Gson gson = new Gson();
+
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                Log.v("resp", response.body().toString());
+                Log.v("resp", gson.toJson(user));
 
                 User userResponse = response.body();
                 if (response.isSuccessful() && userResponse !=null) {

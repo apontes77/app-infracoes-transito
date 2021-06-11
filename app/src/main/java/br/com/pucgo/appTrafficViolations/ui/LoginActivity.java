@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.gson.Gson;
 
 import br.com.pucgo.appTrafficViolations.R;
 import br.com.pucgo.appTrafficViolations.models.User;
@@ -71,23 +74,25 @@ public class LoginActivity extends AppCompatActivity {
             txtPassword.requestFocus();
             return;
         } else if (UserValidations.validateEmail(login) && UserValidations.validatePassword(password)) {
-            User user = new User().builder().login(login).password(password).build();
-            Call<ResponseBody> callVerifyUser = apiServiceUser.loginUser(user);
+            Gson gson = new Gson();
+            User user = new User(login, password);
+            Call<User> callVerifyUser = apiServiceUser.loginUser(user);
 
-            callVerifyUser.enqueue(new Callback<ResponseBody>() {
+            callVerifyUser.enqueue(new Callback<User>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
-                        saveUserDataInSharedPreferences();
+                public void onResponse(Call<User> call, Response<User> response) {
+                    User userResponse = response.body();
+                    if (response.isSuccessful() && userResponse != null) {
                         redirectsToTrafficViolationsListing();
+                        saveUserDataInSharedPreferences();
                     }
                     else {
-                        GenerateToast.createShortToast(getApplicationContext(), "Usuário inexistente! Cadastre-se logo abaixo!"+response.code());
+                        GenerateToast.createShortToast(getApplicationContext(), "Usuário inexistente! Cadastre-se logo abaixo!"+response.body());
                     }
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(Call<User> call, Throwable t) {
                     GenerateToast.createLongToast(getApplicationContext(), t.getMessage());
                 }
             });

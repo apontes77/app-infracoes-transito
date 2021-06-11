@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,72 +27,51 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ListTrafficViolation extends AppCompatActivity implements TrafficViolationListAdapter.denunciaListener {
+public class ListTrafficViolation extends AppCompatActivity implements TrafficViolationListAdapter.ViolationListener {
 
     private RecyclerView recyclerView;
-    private RestApiInterfaceTrafficViolation apiServiceDenuncia;
-    private TextView tituloDenuncia;
-    private TextView descricaoDenuncia;
+    private RestApiInterfaceTrafficViolation apiServiceViolation;
+    private TextView title;
+    private TextView description;
     private FloatingActionButton fab;
-    private ImageView imagem;
+    private ImageView image;
     private List<TrafficViolation> trafficViolations;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listar_denuncias);
-        apiServiceDenuncia = RestApiClient.getClient().create(RestApiInterfaceTrafficViolation.class);
+        setContentView(R.layout.activity_list_violations);
+        apiServiceViolation = RestApiClient.getClient().create(RestApiInterfaceTrafficViolation.class);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_listarDenuncias);
-        tituloDenuncia = (TextView) findViewById(R.id.textView_titulo);
-        descricaoDenuncia = (TextView) findViewById(R.id.textView_descricao);
-        imagem = (ImageView) findViewById(R.id.imageView_1);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_listViolations);
+        title = (TextView) findViewById(R.id.textView_title);
+        description = (TextView) findViewById(R.id.textView_description);
+        image = (ImageView) findViewById(R.id.imageView_violationInfraction);
 
-        Call<List<TrafficViolation>> listCall = apiServiceDenuncia.listTrafficViolations();
-        listCall.enqueue(new Callback<List<TrafficViolation>>() {
+        apiServiceViolation.listTrafficViolations().enqueue(new Callback<List<TrafficViolation>>() {
             @Override
             public void onResponse(Call<List<TrafficViolation>> call, Response<List<TrafficViolation>> response) {
-                List<TrafficViolation> denunciasList = response.body();
-
-
-                Log.v("est", new Gson().toJson(response.body()));
-                TrafficViolationListAdapter adapter = new TrafficViolationListAdapter(getApplicationContext(), denunciasList, ListTrafficViolation.this::selecionaDenuncia);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                List<TrafficViolation> body = response.body();
+                showViolations(body);
             }
-
             @Override
             public void onFailure(Call<List<TrafficViolation>> call, Throwable t) {
-                GenerateToast.createLongToast(getApplicationContext(), "Algum erro ocorreu na busca das infrações");
+                Log.v("ADA", t.getMessage());
+                GenerateToast.createLongToast(getApplicationContext(), "Houve algum problema na busca das infrações registradas!");
             }
         });
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(initiateActivityManipularDenuncia());
 
-//        denuncias.add(new Denuncia("RACHADOR",
-//                "rachador na av portugal"));
-//        denuncias.add(new Denuncia("RACHADOR",
-//                "rachador na av portugal"));
-//        denuncias.add(new Denuncia("RACHADOR",
-//                "rachador na av portugal"));
-//        denuncias.add(new Denuncia("RACHADOR",
-//                "rachador na av portugal"));
-//        denuncias.add(new Denuncia("RACHADOR",
-//                "rachador na av portugal"));
-//        denuncias.add(new Denuncia("RACHADOR",
-//                "rachador na av portugal"));
-//        denuncias.add(new Denuncia("RACHADOR",
-//                "rachador na av portugal"));
-//        denuncias.add(new Denuncia("RACHADOR",
-//                "rachador na av portugal"));
-//
-//
-//        ListaDenunciasAdapter adapter = new ListaDenunciasAdapter(this, denuncias, this);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(initiateActivityInsertViolation());
+    }
+
+    private void showViolations(List<TrafficViolation> violations) {
+        TrafficViolationListAdapter adapter = new TrafficViolationListAdapter(getApplicationContext(), violations, ListTrafficViolation.this::chooseViolation);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
     @NotNull
-    private View.OnClickListener initiateActivityManipularDenuncia() {
+    private View.OnClickListener initiateActivityInsertViolation() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +82,7 @@ public class ListTrafficViolation extends AppCompatActivity implements TrafficVi
     }
 
     @Override
-    public void selecionaDenuncia(int position) {
+    public void chooseViolation(int position) {
         trafficViolations.get(position);
         Intent intent = new Intent(this, EditAndDeleteTrafficViolation.class);
         Bundle bundle = new Bundle();

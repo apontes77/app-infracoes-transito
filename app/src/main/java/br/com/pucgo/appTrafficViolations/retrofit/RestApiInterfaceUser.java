@@ -19,6 +19,6 @@ public interface RestApiInterfaceUser {
     Call<List<User>> listUsers();
 
     @POST("api/v1/users/login")
-    Call<ResponseBody> loginUser(@Body User user);
+    Call<User> loginUser(@Body User user);
 }
 

@@ -22,12 +22,12 @@ import br.com.pucgo.appTrafficViolations.models.TrafficViolation;
 
 public class TrafficViolationListAdapter extends RecyclerView.Adapter<TrafficViolationListAdapter.ViewHolder> {
     private Context context;
-    private denunciaListener mDenunciaListener;
+    private ViolationListener mViolationListener;
     private List<TrafficViolation> trafficViolations = new ArrayList<>();
-    public TrafficViolationListAdapter(Context context, List<TrafficViolation> trafficViolations, denunciaListener mDenunciaListener) {
+    public TrafficViolationListAdapter(Context context, List<TrafficViolation> trafficViolations, ViolationListener mViolationListener) {
         this.context = context;
         this.trafficViolations = trafficViolations;
-        this.mDenunciaListener = mDenunciaListener;
+        this.mViolationListener = mViolationListener;
     }
 
     @NonNull
@@ -35,17 +35,18 @@ public class TrafficViolationListAdapter extends RecyclerView.Adapter<TrafficVio
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_denuncia_listagem, parent, false);
-        return new ViewHolder(view, mDenunciaListener);
+        return new ViewHolder(view, mViolationListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull TrafficViolationListAdapter.ViewHolder holder, int position) {
-        holder.titulo.setText(trafficViolations.get(position).getTitle());
-        holder.descricao.setText(trafficViolations.get(position).getDescription());
-      Picasso
-            .get()
-            .load("https://app-infracoes-transito.s3.us-east-2.amazonaws.com/meliante.jpg")
-            .into(holder.foto);
+        TrafficViolation violation = trafficViolations.get(position);
+        holder.title.setText(violation.getTitle());
+        holder.description.setText(violation.getDescription());
+        holder.dateOfViolation.setText(violation.getDateOfOccurrenceInfraction().toString());
+        Picasso.get()
+                .load(violation.getPhoto())
+                .into(holder.photo);
     }
 
     @Override
@@ -54,28 +55,29 @@ public class TrafficViolationListAdapter extends RecyclerView.Adapter<TrafficVio
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView titulo;
-        TextView descricao;
-        ImageView foto;
-        denunciaListener denunciaListener;
+        TextView title;
+        TextView description;
+        TextView dateOfViolation;
+        ImageView photo;
+        ViolationListener violationListener;
 
-        public ViewHolder(@NonNull View itemView, denunciaListener denunciaListener) {
+        public ViewHolder(@NonNull View itemView, ViolationListener violationListener) {
             super(itemView);
-            titulo = itemView.findViewById(R.id.textView_titulo);
-            descricao = itemView.findViewById(R.id.textView_descricao);
-            foto = itemView.findViewById(R.id.imageView_1);
-            this.denunciaListener = denunciaListener;
+            title = itemView.findViewById(R.id.textView_title);
+            description = itemView.findViewById(R.id.textView_description);
+            photo = itemView.findViewById(R.id.imageView_violationInfraction);
+            this.violationListener = violationListener;
 
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            denunciaListener.selecionaDenuncia(getAdapterPosition());
+            violationListener.chooseViolation(getAdapterPosition());
         }
     }
 
-    public interface denunciaListener {
-        void selecionaDenuncia(int position);
+    public interface ViolationListener {
+        void chooseViolation(int position);
     }
 }
