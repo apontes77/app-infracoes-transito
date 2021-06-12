@@ -25,8 +25,6 @@ public class TrafficViolation {
     private String description;
     @SerializedName("photo")
     private String photo;
-    @SerializedName("dateOfOccurrenceInfraction")
-    private Date dateOfOccurrenceInfraction;
     @SerializedName("violationDistance")
     private Double violationDistance;
     @SerializedName("proposalAmountTrafficTicket")

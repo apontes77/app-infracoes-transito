@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.pucgo.appTrafficViolations.R;
@@ -30,44 +32,43 @@ import retrofit2.Response;
 public class ListTrafficViolation extends AppCompatActivity implements TrafficViolationListAdapter.ViolationListener {
 
     private RecyclerView recyclerView;
-    private RestApiInterfaceTrafficViolation apiServiceViolation;
-    private TextView title;
-    private TextView description;
+    private TrafficViolationListAdapter mAdapter;
+
     private FloatingActionButton fab;
-    private ImageView image;
-    private List<TrafficViolation> trafficViolations;
+    private RestApiInterfaceTrafficViolation apiServiceDenuncia;
+
+
+    List<TrafficViolation> violations;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_violations);
-        apiServiceViolation = RestApiClient.getClient().create(RestApiInterfaceTrafficViolation.class);
-
+        violations = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_listViolations);
-        title = (TextView) findViewById(R.id.textView_title);
-        description = (TextView) findViewById(R.id.textView_description);
-        image = (ImageView) findViewById(R.id.imageView_violationInfraction);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(ListTrafficViolation.this);
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter = new TrafficViolationListAdapter(getApplicationContext(), violations);
+        recyclerView.setAdapter(mAdapter);
 
-        apiServiceViolation.listTrafficViolations().enqueue(new Callback<List<TrafficViolation>>() {
+        apiServiceDenuncia = RestApiClient.getClient().create(RestApiInterfaceTrafficViolation.class);
+        Call<List<TrafficViolation>> listCall = apiServiceDenuncia.listTrafficViolations();
+
+        listCall.enqueue(new Callback<List<TrafficViolation>>() {
             @Override
             public void onResponse(Call<List<TrafficViolation>> call, Response<List<TrafficViolation>> response) {
-                List<TrafficViolation> body = response.body();
-                showViolations(body);
+                violations = response.body();
+                Log.d("TAG", ""+violations);
+                mAdapter.setTrafficViolations(violations);
             }
+
             @Override
             public void onFailure(Call<List<TrafficViolation>> call, Throwable t) {
-                Log.v("ADA", t.getMessage());
-                GenerateToast.createLongToast(getApplicationContext(), "Houve algum problema na busca das infrações registradas!");
+                Log.d("TAG", ""+t.toString());
             }
         });
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(initiateActivityInsertViolation());
-    }
-
-    private void showViolations(List<TrafficViolation> violations) {
-        TrafficViolationListAdapter adapter = new TrafficViolationListAdapter(getApplicationContext(), violations, ListTrafficViolation.this::chooseViolation);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
     @NotNull
@@ -83,11 +84,11 @@ public class ListTrafficViolation extends AppCompatActivity implements TrafficVi
 
     @Override
     public void chooseViolation(int position) {
-        trafficViolations.get(position);
+        violations.get(position);
         Intent intent = new Intent(this, EditAndDeleteTrafficViolation.class);
         Bundle bundle = new Bundle();
-        bundle.putString("titulo", trafficViolations.get(position).getTitle());
-        bundle.putString("descricao", trafficViolations.get(position).getDescription());
+        bundle.putString("titulo", violations.get(position).getTitle());
+        bundle.putString("descricao", violations.get(position).getDescription());
         intent.putExtras(bundle);
         startActivity(intent);
     }

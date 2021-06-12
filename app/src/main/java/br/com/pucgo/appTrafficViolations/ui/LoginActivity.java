@@ -83,8 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<User> call, Response<User> response) {
                     User userResponse = response.body();
                     if (response.isSuccessful() && userResponse != null) {
-                        redirectsToTrafficViolationsListing();
                         saveUserDataInSharedPreferences();
+                        redirectsToTrafficViolationsListing();
                     }
                     else {
                         GenerateToast.createShortToast(getApplicationContext(), "Usuário inexistente! Cadastre-se logo abaixo!"+response.body());
@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void redirectsToTrafficViolationsListing() {
-        Intent goToListing = new Intent(getApplicationContext(), ListTrafficViolation.class);
+        Intent goToListing = new Intent(LoginActivity.this, ListTrafficViolation.class);
         startActivity(goToListing);
     }
 
