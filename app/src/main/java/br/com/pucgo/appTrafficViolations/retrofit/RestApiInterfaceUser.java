@@ -10,6 +10,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
+
+/**
+ * interface que define o contrato de métodos a serem implementados nas chamadas HTTP associadas às operações de manipulação de Usuário.
+ */
 public interface RestApiInterfaceUser {
     @Headers("Content-Type: application/json")
     @POST("api/v1/users/save")

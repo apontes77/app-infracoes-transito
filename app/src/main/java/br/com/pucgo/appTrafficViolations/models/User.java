@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+/**
+ * classe de modelo - usuário
+ */
 public class User {
     private String login;
     private String password;

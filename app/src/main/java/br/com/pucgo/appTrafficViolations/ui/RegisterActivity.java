@@ -53,6 +53,14 @@ public class RegisterActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(email_register.getText().toString().isEmpty() || cpf_register.getText().toString().isEmpty() || password_register.getText().toString().isEmpty()) {
+                    email_register.requestFocus();
+                    email_register.setError("Insira o email!");
+                    cpf_register.requestFocus();
+                    cpf_register.setError("Insira o cpf!");
+                    password_register.requestFocus();
+                    password_register.setError("Insira a senha!");
+                }
                 if (UserValidations.validateEmail(email_register.getText().toString())
                         && UserValidations.validatePassword(password_register.getText().toString(), repeated_password_register.getText().toString())) {
                     String email = email_register.getText().toString();

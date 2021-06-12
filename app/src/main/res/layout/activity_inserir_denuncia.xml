@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:text="Título"/>
+            android:hint="Título"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Space
@@ -33,7 +33,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_Description"
-            android:text="Descrição"
+            android:hint="Descrição"
             android:inputType="textMultiLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:text="Distância aproximada do ocorrido"/>
+            android:hint="Distância aproximada do ocorrido"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Space
@@ -68,14 +68,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:text="Proposta de valor para a multa"/>
+            android:hint="Proposta de valor para a multa"/>
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <ImageView
         android:id="@+id/imageView_loadImage"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="150dp"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:layout_gravity="center"/>
 
     <LinearLayout

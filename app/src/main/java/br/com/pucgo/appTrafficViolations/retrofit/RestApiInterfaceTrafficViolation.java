@@ -3,6 +3,7 @@ package br.com.pucgo.appTrafficViolations.retrofit;
 import java.util.List;
 
 import br.com.pucgo.appTrafficViolations.models.TrafficViolation;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,13 +17,14 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+/**
+ * interface que define o contrato de métodos a serem implementados nas chamadas HTTP associadas às infrações de trânsito
+ */
 public interface RestApiInterfaceTrafficViolation {
 
     @Multipart
     @POST("api/v1/traffic-violation/save")
-    Call<TrafficViolation> insertTrafficViolation(
-            @Part("data") String data,
-            @Part("image_binary") RequestBody image);
+    Call<TrafficViolation> insertTrafficViolation(@Part MultipartBody.Part file, @Part("json") RequestBody json);
 
     @DELETE("api/v1/traffic-violation/violation/{id}")
     Call<Void> deleteTrafficViolation(@Path("id") Integer id);

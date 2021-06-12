@@ -1,10 +1,10 @@
 package br.com.pucgo.appTrafficViolations.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,15 +12,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-
 import br.com.pucgo.appTrafficViolations.R;
 import br.com.pucgo.appTrafficViolations.models.User;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiClient;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceUser;
 import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
 import br.com.pucgo.appTrafficViolations.validations.UserValidations;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,18 +30,17 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtPassword;
     private TextView txtRegister;
     private Button btnLogin;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         apiServiceUser = RestApiClient.getClient().create(RestApiInterfaceUser.class);
-        txtLogin = (EditText) findViewById(R.id.edt_Email_Login);
-        txtPassword = (EditText) findViewById(R.id.edt_Senha_Login);
-        txtRegister = (TextView) findViewById(R.id.txt_Cadastrar);
+        txtLogin = findViewById(R.id.edt_Email_Login);
+        txtPassword = findViewById(R.id.edt_Senha_Login);
+        txtRegister = findViewById(R.id.txt_Cadastrar);
 
-        btnLogin = (Button) findViewById(R.id.btn_Login);
+        btnLogin = findViewById(R.id.btn_Login);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
             txtPassword.requestFocus();
             return;
         } else if (UserValidations.validateEmail(login) && UserValidations.validatePassword(password)) {
-            Gson gson = new Gson();
             User user = new User(login, password);
             Call<User> callVerifyUser = apiServiceUser.loginUser(user);
 
@@ -101,17 +96,27 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void saveUserDataInSharedPreferences() {
-        SharedPreferences.Editor editor = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences(NAME_PREFERENCES, Context.MODE_PRIVATE).edit();
 
         editor.putString("login", txtLogin.getText().toString());
         editor.putString("password", txtPassword.getText().toString());
-        editor.apply();
+        editor.commit();
+        GenerateToast.createLongToast(this, "salvo!");
     }
 
     public void retrievesUserDataFromSharedPreferences() {
-        SharedPreferences data = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE);
-        txtLogin.setText(data.getString("login", "Insira Login"));
-        txtPassword.setText(data.getString("password", "Insira Senha"));
+        SharedPreferences data = getApplicationContext().getSharedPreferences(NAME_PREFERENCES, Context.MODE_PRIVATE);
+        if(data!=null){
+            String login = data.getString("login", "Insira Login");
+            txtLogin.setText(login);
+            String password = data.getString("password", "Insira Senha");
+            txtPassword.setText(password);
+        }
+        else {
+            txtLogin.requestFocus();
+            txtPassword.requestFocus();
+        }
+
     }
 
     public void redirectsToTrafficViolationsListing() {

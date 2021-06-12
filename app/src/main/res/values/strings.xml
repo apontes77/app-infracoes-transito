@@ -7,4 +7,6 @@
     <string name="violation_image">Violation Image</string>
     <string name="tv_violation_list" />
     <string name="tv_description_list">description</string>
+    <string name="distance">Distância</string>
+    <string name="price">preço</string>
 </resources>

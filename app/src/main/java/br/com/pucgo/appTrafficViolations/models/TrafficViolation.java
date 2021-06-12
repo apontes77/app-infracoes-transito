@@ -16,6 +16,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Builder
+/**
+ * classe de modelo - infração de trânsito
+ */
 public class TrafficViolation {
     @SerializedName("id")
     private Integer id;
