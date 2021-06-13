@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,7 +51,7 @@ public class InsertTrafficViolation extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inserir_denuncia);
+        setContentView(R.layout.activity_insert_violation);
 //        Bundle bundle = getIntent().getExtras();
 //        String title = bundle.getString("title");
 //        String description = bundle.getString("description");

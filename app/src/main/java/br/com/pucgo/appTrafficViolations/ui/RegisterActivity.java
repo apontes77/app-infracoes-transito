@@ -3,15 +3,15 @@ package br.com.pucgo.appTrafficViolations.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
-
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Random;
 
 import br.com.pucgo.appTrafficViolations.R;
 import br.com.pucgo.appTrafficViolations.models.User;
@@ -20,9 +20,6 @@ import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceUser;
 import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
 import br.com.pucgo.appTrafficViolations.validations.UserValidations;
 import br.com.pucgo.appTrafficViolations.validations.ValidateCPF;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -33,11 +30,12 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText repeated_password_register;
     private RestApiInterfaceUser apiUserService;
     private User user;
+    Random random;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastro);
+        setContentView(R.layout.activity_register);
 
         email_register = findViewById(R.id.edt_Email_register);
         cpf_register =  findViewById(R.id.edt_cpf_register);
@@ -65,11 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (UserValidations.validateEmail(email_register.getText().toString())
                         && UserValidations.validatePassword(password_register.getText().toString(), repeated_password_register.getText().toString())
                         && ValidateCPF.isCPF(cpf_register.getText().toString())) {
-                    String email = email_register.getText().toString();
-                    String senha = password_register.getText().toString();
-                    String cpf = cpf_register.getText().toString();
-                    user = new User().builder().login(email).password(senha).CPF(cpf).build();
-                    insertUserAPI(user);
+                    insertUserPreferences();
                 } else {
                     GenerateToast.createShortToast(getApplicationContext(), "Email ou senha inválidos! Tente novamente!");
                 }
@@ -77,34 +71,18 @@ public class RegisterActivity extends AppCompatActivity {
         };
     }
 
-    public void insertUserAPI(User user) {
-        Call<User> callInsertUser = apiUserService.insertUser(user);
-        callInsertUser.enqueue(new Callback<User>() {
-            Gson gson = new Gson();
+    private void insertUserPreferences() {
+        SharedPreferences prefs = getSharedPreferences("preferencias", MODE_PRIVATE);
+        SharedPreferences.Editor ed = prefs.edit();
 
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                Log.v("resp", gson.toJson(user));
+        ed.putString("login", email_register.getText().toString());
+        ed.putString("password", password_register.getText().toString());
+        ed.putString("cpf", cpf_register.getText().toString());
 
-                User userResponse = response.body();
-                if (response.isSuccessful() && userResponse !=null) {
-                    GenerateToast.createLongToast(getApplicationContext(), "Cadastro realizado com sucesso!");
-                    redirectsToLoginScreen();
-                }
-                else {
-                    GenerateToast.createShortToast(getApplicationContext(), "Não foi possível cadastrar! Tente de novo!");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.v("fail", t.toString());
-
-                GenerateToast.createShortToast(getApplicationContext(), "Sem conexão! Tente novamente.");
-                call.cancel();
-            }
-        });
+        ed.apply();
         cleanFields();
+        GenerateToast.createLongToast(getApplicationContext(), "Cadastro realizado com sucesso!");
+        redirectsToLoginScreen();
     }
 
     private void redirectsToLoginScreen() {

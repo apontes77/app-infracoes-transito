@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
  * classe de modelo - usuário
  */
 public class User {
+    private Integer id;
     private String login;
     private String password;
     private String CPF;
@@ -21,5 +22,8 @@ public class User {
     public User (String login, String password) {
         this.login = login;
         this.password = password;
+    }
+
+    public User(int idUser, String login, String password) {
     }
 }

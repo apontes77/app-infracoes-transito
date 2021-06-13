@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.strictmode.Violation;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,10 +13,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 import br.com.pucgo.appTrafficViolations.R;
-import br.com.pucgo.appTrafficViolations.models.TrafficViolation;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceTrafficViolation;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,11 +33,10 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
     private Button deleteViolation;
     private RestApiInterfaceTrafficViolation apiServiceViolation;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editar_excluir_denuncia);
+        setContentView(R.layout.activity_edit_delete_violation);
         Bundle bundle = getIntent().getExtras();
         String title = bundle.getString("title");
         String description = bundle.getString("description");

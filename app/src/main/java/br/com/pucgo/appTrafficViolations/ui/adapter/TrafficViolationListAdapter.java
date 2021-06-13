@@ -117,6 +117,5 @@ public class TrafficViolationListAdapter extends RecyclerView.Adapter<TrafficVio
             price = itemView.findViewById(R.id.tv_price);
             constraintLayout = itemView.findViewById(R.id.oneViolationLayout);
         }
-
     }
 }

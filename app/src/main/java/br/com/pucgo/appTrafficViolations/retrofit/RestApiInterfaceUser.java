@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 
 /**
@@ -21,6 +22,9 @@ public interface RestApiInterfaceUser {
 
     @GET("api/v1/users")
     Call<List<User>> listUsers();
+
+    @GET("api/v1/users/user")
+    Call<Void> getUserID(@Body User user);
 
     @POST("api/v1/users/login")
     Call<User> loginUser(@Body User user);
