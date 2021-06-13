@@ -38,13 +38,13 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
 
-        email_register = (EditText) findViewById(R.id.edt_Email_register);
-        cpf_register = (EditText) findViewById(R.id.edt_cpf_register);
-        password_register = (EditText) findViewById(R.id.edt_password_register);
-        repeated_password_register = (EditText) findViewById(R.id.edt_repeated_password_register);
+        email_register = findViewById(R.id.edt_Email_register);
+        cpf_register =  findViewById(R.id.edt_cpf_register);
+        password_register =  findViewById(R.id.edt_password_register);
+        repeated_password_register = findViewById(R.id.edt_repeated_password_register);
         apiUserService = RestApiClient.getClient().create(RestApiInterfaceUser.class);
 
-        btn_user_register = (Button) findViewById(R.id.btn_user_register);
+        btn_user_register = findViewById(R.id.btn_user_register);
         btn_user_register.setOnClickListener(userRegister());
     }
 

@@ -1,12 +1,13 @@
 package br.com.pucgo.appTrafficViolations.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,15 +31,18 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtPassword;
     private TextView txtRegister;
     private Button btnLogin;
+    SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        preferences = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE);
 
         apiServiceUser = RestApiClient.getClient().create(RestApiInterfaceUser.class);
         txtLogin = findViewById(R.id.edt_Email_Login);
-        txtPassword = findViewById(R.id.edt_Senha_Login);
-        txtRegister = findViewById(R.id.txt_Cadastrar);
+        txtPassword = findViewById(R.id.edt_Password_Login);
+        txtRegister = findViewById(R.id.txt_register);
+
 
         btnLogin = findViewById(R.id.btn_Login);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -59,10 +63,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void seekUserInBackEnd() {
+
          String login = txtLogin.getText().toString();
          String password = txtPassword.getText().toString();
 
-         retrievesUserDataFromSharedPreferences();
         if (login.isEmpty() || password.isEmpty()) {
             txtLogin.setError("Insira o login");
             txtLogin.requestFocus();
@@ -96,27 +100,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void saveUserDataInSharedPreferences() {
-        SharedPreferences.Editor editor = getSharedPreferences(NAME_PREFERENCES, Context.MODE_PRIVATE).edit();
+        String login = txtLogin.getText().toString();
+        String password = txtPassword.getText().toString();
 
-        editor.putString("login", txtLogin.getText().toString());
-        editor.putString("password", txtPassword.getText().toString());
-        editor.commit();
-        GenerateToast.createLongToast(this, "salvo!");
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("login", login);
+        editor.putString("password", password);
+        editor.apply();
     }
 
-    public void retrievesUserDataFromSharedPreferences() {
-        SharedPreferences data = getApplicationContext().getSharedPreferences(NAME_PREFERENCES, Context.MODE_PRIVATE);
-        if(data!=null){
-            String login = data.getString("login", "Insira Login");
-            txtLogin.setText(login);
-            String password = data.getString("password", "Insira Senha");
-            txtPassword.setText(password);
-        }
-        else {
-            txtLogin.requestFocus();
-            txtPassword.requestFocus();
-        }
-
+    public void retrieveUserData() {
+        preferences = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE);
+       if(preferences.contains("login")){
+           txtLogin.setText(preferences.getString("login", "asdas"));
+       }
+       if(preferences.contains("password")) {
+           txtPassword.setText(preferences.getString("password", "asasddas"));
+       }
     }
 
     public void redirectsToTrafficViolationsListing() {
