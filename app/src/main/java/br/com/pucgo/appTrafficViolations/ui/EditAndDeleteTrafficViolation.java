@@ -1,9 +1,12 @@
 package br.com.pucgo.appTrafficViolations.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.strictmode.Violation;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,8 +14,18 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import br.com.pucgo.appTrafficViolations.R;
+import java.util.List;
 
+import br.com.pucgo.appTrafficViolations.R;
+import br.com.pucgo.appTrafficViolations.models.TrafficViolation;
+import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceTrafficViolation;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * Esta é a Activity que oferece a opção de editar ou excluir uma determinada denúncia de infração de trânsito.
+ */
 public class EditAndDeleteTrafficViolation extends AppCompatActivity {
 
     private EditText titleEdit;
@@ -22,6 +35,8 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
     private ImageView photo;
     private Button editViolation;
     private Button deleteViolation;
+    private RestApiInterfaceTrafficViolation apiServiceViolation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +87,36 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
         deleteViolation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditAndDeleteTrafficViolation.this);
+                builder.setTitle("Tem certeza?");
+                builder.setMessage("Esta ação é irreversível...");
+                builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                        apiServiceViolation.deleteTrafficViolation(1).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
 
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                });
+
+                builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog ad = builder.create();
+                ad.show();
             }
         });
-
     }
 }
