@@ -19,6 +19,7 @@ import br.com.pucgo.appTrafficViolations.retrofit.RestApiClient;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceUser;
 import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
 import br.com.pucgo.appTrafficViolations.validations.UserValidations;
+import br.com.pucgo.appTrafficViolations.validations.ValidateCPF;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,7 +63,8 @@ public class RegisterActivity extends AppCompatActivity {
                     password_register.setError("Insira a senha!");
                 }
                 if (UserValidations.validateEmail(email_register.getText().toString())
-                        && UserValidations.validatePassword(password_register.getText().toString(), repeated_password_register.getText().toString())) {
+                        && UserValidations.validatePassword(password_register.getText().toString(), repeated_password_register.getText().toString())
+                        && ValidateCPF.isCPF(cpf_register.getText().toString())) {
                     String email = email_register.getText().toString();
                     String senha = password_register.getText().toString();
                     String cpf = cpf_register.getText().toString();
@@ -70,7 +72,6 @@ public class RegisterActivity extends AppCompatActivity {
                     insertUserAPI(user);
                 } else {
                     GenerateToast.createShortToast(getApplicationContext(), "Email ou senha inválidos! Tente novamente!");
-
                 }
             }
         };
