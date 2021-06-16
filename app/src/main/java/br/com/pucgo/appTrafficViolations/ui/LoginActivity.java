@@ -14,26 +14,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import br.com.pucgo.appTrafficViolations.R;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiClient;
-import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceUser;
 import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
 import br.com.pucgo.appTrafficViolations.validations.UserValidations;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private RestApiInterfaceUser apiServiceUser;
     public static final String NAME_PREFERENCES = "INFORMACOES_LOGIN_AUTOMATICO";
     private EditText txtLogin;
     private EditText txtPassword;
     private TextView txtRegister;
     private Button btnLogin;
-    SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        preferences = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE);
 
-        apiServiceUser = RestApiClient.getClient().create(RestApiInterfaceUser.class);
         txtLogin = findViewById(R.id.edt_Email_Login);
         txtPassword = findViewById(R.id.edt_Password_Login);
         txtRegister = findViewById(R.id.txt_register);
@@ -74,8 +69,8 @@ public class LoginActivity extends AppCompatActivity {
             return;
         } else if (UserValidations.validateEmail(login) && UserValidations.validatePassword(password)) {
             SharedPreferences sharedPreferences = getSharedPreferences("preferencias", MODE_PRIVATE);
-            String login1 = sharedPreferences.getString("login", "ajdhjasd");
-            String password1 = sharedPreferences.getString("password", "asdasd");
+            String login1 = sharedPreferences.getString("login", "");
+            String password1 = sharedPreferences.getString("password", "");
             Log.v("LOG", login1);
             Log.v("PAS", password1);
 

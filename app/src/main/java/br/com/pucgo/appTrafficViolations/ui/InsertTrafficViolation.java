@@ -1,6 +1,11 @@
 package br.com.pucgo.appTrafficViolations.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,13 +17,20 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.loader.content.CursorLoader;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import br.com.pucgo.appTrafficViolations.R;
@@ -28,6 +40,7 @@ import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceTrafficViolati
 import br.com.pucgo.appTrafficViolations.utilities.BinaryBytes;
 import br.com.pucgo.appTrafficViolations.utilities.ErrorActivity;
 import br.com.pucgo.appTrafficViolations.utilities.SucessActivity;
+import lombok.SneakyThrows;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -37,7 +50,8 @@ import retrofit2.Response;
 
 public class InsertTrafficViolation extends AppCompatActivity {
 
-    private static final int PICK_IMAGE = 100;
+    private static final int PICK_IMAGE = 1;
+    private static final int GALLERY_IMAGES = 2;
     private RestApiInterfaceTrafficViolation apiServiceViolation;
     private EditText ed_title;
     private EditText ed_description;
@@ -46,19 +60,23 @@ public class InsertTrafficViolation extends AppCompatActivity {
     private ImageView iv_imageToSend;
     private Button btn_loadImage;
     private Button btn_sendViolation;
-    private Uri imageUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_violation);
-//        Bundle bundle = getIntent().getExtras();
-//        String title = bundle.getString("title");
-//        String description = bundle.getString("description");
-//        String photoReceived = bundle.getString("photo");
-//        Double distance = bundle.getDouble("distance");
-//        Double price = bundle. getDouble("price");
 
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        GALLERY_IMAGES);
+            }
+        }
 
         apiServiceViolation = RestApiClient.getClient().create(RestApiInterfaceTrafficViolation.class);
 
@@ -74,7 +92,8 @@ public class InsertTrafficViolation extends AppCompatActivity {
         btn_loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                gallery.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(gallery, PICK_IMAGE);
             }
         });
@@ -82,12 +101,12 @@ public class InsertTrafficViolation extends AppCompatActivity {
         btn_sendViolation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makeCallToInsert();
+                makeCallToInsert(BinaryBytes.getResourceInBytes(InsertTrafficViolation.this, R.id.imageView_loadImage));
             }
         });
     }
 
-    private void makeCallToInsert() {
+    public void makeCallToInsert(byte[] imageBytes) {
 
         if (ed_title.getText().toString().isEmpty()
                 || ed_description.getText().toString().isEmpty()
@@ -105,11 +124,10 @@ public class InsertTrafficViolation extends AppCompatActivity {
             //cria o json da denuncia sem a imagem
             String json = returnsJsonString();
 
-            // carrega a imagem e a transforma num arquivo
-            File file = returnsImageFile();
-
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageBytes);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", "file.jpg", requestFile);
             apiServiceViolation.insertTrafficViolation(
-                    MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file)),
+                    body,
                     RequestBody.create(MediaType.parse("multipart/form-data"), json))
                     .enqueue(new Callback<TrafficViolation>() {
                         @Override
@@ -125,22 +143,7 @@ public class InsertTrafficViolation extends AppCompatActivity {
                             startActivity(intent);
                         }
                     });
-            }
-    }
-
-    @NotNull
-    private File returnsImageFile() {
-        String path = "";
-        File file = new File(path);
-        byte[] imageBinary = BinaryBytes.getResourceInBytes(this, R.id.imageView_loadImage);
-        try {
-            OutputStream os = new FileOutputStream(file);
-            os.write(imageBinary);
-            os.close();
-        } catch (Exception e) {
-            e.getMessage();
-        }
-        return file;
+           }
     }
 
     private String returnsJsonString() {
@@ -161,11 +164,11 @@ public class InsertTrafficViolation extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            imageUri = data.getData();
-            iv_imageToSend.setImageURI(imageUri);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            Uri imageContent = data.getData();
+            iv_imageToSend.setImageURI(imageContent);
         }
     }
 

@@ -1,123 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:orientation="vertical"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-tools:context=".ui.EditAndDeleteTrafficViolation">
-
-<Space
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="35dp"/>
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Título da Infração"/>
+    android:layout_height="match_parent"
+    tools:context=".ui.EditAndDeleteTrafficViolation">
 
-<com.google.android.material.textfield.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/txtInputEditText_title_noEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-</com.google.android.material.textfield.TextInputLayout>
-
-<Space
-    android:layout_width="match_parent"
-    android:layout_height="20dp"/>
-
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Descrição da Infração"/>
-
-<com.google.android.material.textfield.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/txtInputEditText_description_noEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</com.google.android.material.textfield.TextInputLayout>
-
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Distância Aproximada da Infração"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtInputEditText_violationDistance_noEdit"
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="35dp"/>
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="Título da Infração"/>
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Valor Proposto para Multa"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtInputEditText_title_noEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtInputEditText_proposalPrice_noEdit"
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="Descrição da Infração"/>
 
-<Space
-    android:layout_width="match_parent"
-    android:layout_height="12dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/imageView_loadImage_noEdit"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtInputEditText_description_noEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="horizontal">
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_edit_violation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="90dp"
-        android:text="Editar"/>
-    <Space
-        android:layout_width="12dp"
-        android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Distância Aproximada da Infração"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_delete_violation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Excluir"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-</LinearLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtInputEditText_violationDistance_noEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Valor Proposto para Multa"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtInputEditText_proposalPrice_noEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp"/>
+
+        <ImageView
+            android:id="@+id/imageView_loadImage_noEdit"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_edit_violation"
+                android:layout_width="100dp"
+                android:layout_height="58dp"
+                android:layout_marginStart="76dp"
+                android:layout_marginLeft="76dp"
+                android:text="Editar"
+                app:layout_constraintBaseline_toBaselineOf="@+id/button_delete_violation"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_delete_violation"
+                android:layout_width="111dp"
+                android:layout_height="58dp"
+                android:layout_marginEnd="68dp"
+                android:layout_marginRight="68dp"
+                android:text="Excluir"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</ScrollView>

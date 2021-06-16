@@ -10,10 +10,9 @@ public class BinaryBytes {
     public static byte[] getResourceInBytes(Context context, int resource ){
         final Bitmap img = BitmapFactory.decodeResource( context.getResources(), resource );
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        //img.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
-        return( byteArray );
+        return byteArray ;
     }
 
     public static String getResourceName( Context context, int resource ){

@@ -16,7 +16,6 @@ import java.util.Random;
 import br.com.pucgo.appTrafficViolations.R;
 import br.com.pucgo.appTrafficViolations.models.User;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiClient;
-import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceUser;
 import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
 import br.com.pucgo.appTrafficViolations.validations.UserValidations;
 import br.com.pucgo.appTrafficViolations.validations.ValidateCPF;
@@ -28,7 +27,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText cpf_register;
     private EditText password_register;
     private EditText repeated_password_register;
-    private RestApiInterfaceUser apiUserService;
     private User user;
     Random random;
 
@@ -41,7 +39,6 @@ public class RegisterActivity extends AppCompatActivity {
         cpf_register =  findViewById(R.id.edt_cpf_register);
         password_register =  findViewById(R.id.edt_password_register);
         repeated_password_register = findViewById(R.id.edt_repeated_password_register);
-        apiUserService = RestApiClient.getClient().create(RestApiInterfaceUser.class);
 
         btn_user_register = findViewById(R.id.btn_user_register);
         btn_user_register.setOnClickListener(userRegister());
