@@ -3,6 +3,7 @@ package br.com.pucgo.appTrafficViolations.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -28,6 +29,8 @@ public class TrafficViolation {
     private String description;
     @SerializedName("photo")
     private String photo;
+    @SerializedName("date")
+    private String dateTime;
     @SerializedName("violationDistance")
     private Double violationDistance;
     @SerializedName("proposalAmountTrafficTicket")

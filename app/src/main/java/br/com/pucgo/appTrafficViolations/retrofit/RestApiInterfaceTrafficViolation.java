@@ -9,7 +9,6 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -24,7 +23,7 @@ public interface RestApiInterfaceTrafficViolation {
 
     @Multipart
     @POST("api/v1/traffic-violation/save")
-    Call<TrafficViolation> insertTrafficViolation(@Part MultipartBody.Part file, @Part("json") RequestBody json);
+    Call<Void> insertTrafficViolation(@Part MultipartBody.Part file, @Part("json") RequestBody json);
 
     @DELETE("api/v1/traffic-violation/violation/{id}")
     Call<Void> deleteTrafficViolation(@Path("id") Integer id);
