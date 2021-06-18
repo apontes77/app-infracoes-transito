@@ -83,7 +83,7 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
         editViolation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditAndDeleteTrafficViolation.this, InsertTrafficViolation.class);
+                Intent intent = new Intent(EditAndDeleteTrafficViolation.this, EditViolation.class);
                 intent.putExtra("title", title);
                 intent.putExtra("description", description);
                 intent.putExtra("photo",photoReceived);
@@ -130,7 +130,6 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-
                 AlertDialog ad = builder.create();
                 ad.show();
             }

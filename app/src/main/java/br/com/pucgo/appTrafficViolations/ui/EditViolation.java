@@ -1,12 +1,8 @@
 package br.com.pucgo.appTrafficViolations.ui;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
@@ -16,11 +12,11 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class InsertTrafficViolation extends AppCompatActivity {
+public class EditViolation extends AppCompatActivity {
 
     private RestApiInterfaceTrafficViolation apiServiceViolation;
     private EditText ed_title;
@@ -51,11 +47,22 @@ public class InsertTrafficViolation extends AppCompatActivity {
     private Button btn_loadImage;
     private Button btn_sendViolation;
     String currentPhotoPath;
+    Integer id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_violation);
+
+        Bundle bundle = getIntent().getExtras();
+        id = bundle.getInt("id");
+        String title = bundle.getString("title");
+        String description = bundle.getString("description");
+        String date = bundle.getString("date");
+        String photoReceived = bundle.getString("photo");
+        Double distance = bundle.getDouble("distance");
+        Double price = bundle. getDouble("price");
+
         apiServiceViolation = RestApiClient.getClient().create(RestApiInterfaceTrafficViolation.class);
 
         ed_title =  findViewById(R.id.edt_title);
@@ -67,6 +74,14 @@ public class InsertTrafficViolation extends AppCompatActivity {
         iv_imageToSend = findViewById(R.id.imageView_loadImage);
         btn_loadImage =  findViewById(R.id.button_loadImage);
         btn_sendViolation = findViewById(R.id.button_sendViolation);
+
+        this.ed_title.setText(title);
+        this.ed_date.setText(date);
+        this.ed_description.setText(description);
+        this.ed_distance.setText(String.valueOf(distance));
+        this.ed_price.setText(String.valueOf(price));
+
+        Picasso.get().load(photoReceived).into(iv_imageToSend);
 
         btn_loadImage.setOnClickListener(v -> {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK,
@@ -107,15 +122,15 @@ public class InsertTrafficViolation extends AppCompatActivity {
                     .enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(@NotNull Call<Void> call, Response<Void> response) {
-                            GenerateToast.createLongToast(InsertTrafficViolation.this, "Envio realizado com sucesso!");
-                            Intent intent = new Intent(InsertTrafficViolation.this, ListTrafficViolation.class);
+                            GenerateToast.createLongToast(EditViolation.this, "Envio realizado com sucesso!");
+                            Intent intent = new Intent(EditViolation.this, ListTrafficViolation.class);
                             startActivity(intent);
                         }
 
                         @Override
                         public void onFailure(@NotNull Call<Void> call, Throwable t) {
                             Log.v("LOG", t.getMessage());
-                            Intent intent = new Intent(InsertTrafficViolation.this, ListTrafficViolation.class);
+                            Intent intent = new Intent(EditViolation.this, ListTrafficViolation.class);
                             startActivity(intent);
                         }
                     });
