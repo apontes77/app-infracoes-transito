@@ -1,6 +1,7 @@
 package br.com.pucgo.appTrafficViolations.ui;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -38,6 +39,7 @@ import retrofit2.Response;
 public class EditViolation extends AppCompatActivity {
 
     private RestApiInterfaceTrafficViolation apiServiceViolation;
+    private static final int PICK_FROM_GALLERY = 0;
     private EditText ed_title;
     private EditText ed_description;
     private EditText ed_distance;
@@ -46,13 +48,13 @@ public class EditViolation extends AppCompatActivity {
     private ImageView iv_imageToSend;
     private Button btn_loadImage;
     private Button btn_sendViolation;
-    String currentPhotoPath;
+    File imageFile;
     Integer id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insert_violation);
+        setContentView(R.layout.activity_edit_violation);
 
         Bundle bundle = getIntent().getExtras();
         id = bundle.getInt("id");
@@ -86,8 +88,7 @@ public class EditViolation extends AppCompatActivity {
         btn_loadImage.setOnClickListener(v -> {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(galleryIntent, 0);
+            startActivityForResult(galleryIntent, PICK_FROM_GALLERY);
         });
 
         btn_sendViolation.setOnClickListener(v -> {
@@ -111,9 +112,8 @@ public class EditViolation extends AppCompatActivity {
             //cria o json da denuncia sem a imagem
             String json = returnsJsonString();
 
-            File file = new File("/storage/emulated/0/Download/traffic.jpg");
-            RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
 
             Log.v("tent", json);
             apiServiceViolation.updateTrafficViolation(
@@ -137,21 +137,27 @@ public class EditViolation extends AppCompatActivity {
         }
     }
 
-    private File createImageFile() throws IOException {
+    private File createImageFile(String name) throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "png_" + timeStamp + "_";
-        File storageDir = new File("/storage/emulated/0/Download/");
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".png",         /* suffix */
-                storageDir      /* directory */
-        );
+        return new File(name);
+    }
 
-        Log.d("NOME ==>", storageDir.toString());
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
+    public String getRealPathFromURIForGallery(Uri uri) {
+        if (uri == null) {
+            return null;
+        }
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = this.getContentResolver().query(uri, projection, null,
+                null, null);
+        if (cursor != null) {
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        assert false;
+        cursor.close();
+        return uri.getPath();
     }
 
     private void emptyFieldsWarning() {
@@ -202,12 +208,14 @@ public class EditViolation extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (requestCode == 0 && resultCode == RESULT_OK && data != null) {
+            if (requestCode == PICK_FROM_GALLERY && resultCode == RESULT_OK && data != null) {
                 Uri selectedImage = data.getData();
+                String selectedImagePath = getRealPathFromURIForGallery(selectedImage);
+                imageFile = createImageFile(selectedImagePath);
                 iv_imageToSend.setImageURI(selectedImage);
             }
         } catch (Exception e) {
-            Log.v("error", e.getMessage());
+            Log.d("IMAGE_ERROR","Alguma exceção ocorreu ao carregar a imagem no ImageView.");
         }
     }
 }

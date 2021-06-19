@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -58,7 +59,6 @@ public class InsertTrafficViolation extends AppCompatActivity {
     private Button btn_loadImage;
     private Button btn_sendViolation;
     File imageFile;
-    String currentPhotoPath;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class InsertTrafficViolation extends AppCompatActivity {
         ed_date = findViewById(R.id.txtInputEditText_date_noEdit);
         ed_price = findViewById(R.id.txtInputEditText_proposalPrice_noEdit);
 
-        iv_imageToSend = findViewById(R.id.imageView_loadImage);
+        iv_imageToSend = (ImageView) findViewById(R.id.imageView_loadImage_toInsert);
         btn_loadImage =  findViewById(R.id.button_loadImage);
         btn_sendViolation = findViewById(R.id.button_sendViolation);
 
@@ -81,7 +81,7 @@ public class InsertTrafficViolation extends AppCompatActivity {
                         if (ActivityCompat.checkSelfPermission(InsertTrafficViolation.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                             ActivityCompat.requestPermissions(InsertTrafficViolation.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_FROM_GALLERY);
                         } else {
-                            Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(galleryIntent, PICK_FROM_GALLERY);
                         }
                     } catch (Exception e) {
@@ -112,7 +112,6 @@ public class InsertTrafficViolation extends AppCompatActivity {
             //cria o json da denuncia sem a imagem
             String json = returnsJsonString();
 
-            //File file = new File("/storage/emulated/0/Download/traffic.jpg");
             RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
 
@@ -212,10 +211,12 @@ public class InsertTrafficViolation extends AppCompatActivity {
                 Uri selectedImage = data.getData();
                 String selectedImagePath = getRealPathFromURIForGallery(selectedImage);
                 imageFile = createImageFile(selectedImagePath);
-                iv_imageToSend.setImageURI(selectedImage);
+                Log.d("IMG", selectedImage.toString());
+                Picasso.get().load(selectedImage).into(iv_imageToSend);
+                //iv_imageToSend.setImageURI(selectedImage);
             }
         } catch (Exception e) {
-            Log.v("error", e.getMessage());
+            Log.d("IMAGE_ERROR","Alguma exceção ocorreu ao carregar a imagem no ImageView." + e.getMessage());
         }
     }
 }

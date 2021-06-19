@@ -16,10 +16,12 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name="br.com.pucgo.appTrafficViolations.utilities.ErrorActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
             android:label="Algo de Errado!"
             android:parentActivityName="br.com.pucgo.appTrafficViolations.ui.ListTrafficViolation"/>
         <activity
             android:name="br.com.pucgo.appTrafficViolations.utilities.SucessActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
             android:label="Tudo Ok!"
             android:parentActivityName="br.com.pucgo.appTrafficViolations.ui.ListTrafficViolation"/>
         <activity android:name="br.com.pucgo.appTrafficViolations.ui.EditAndDeleteTrafficViolation" />

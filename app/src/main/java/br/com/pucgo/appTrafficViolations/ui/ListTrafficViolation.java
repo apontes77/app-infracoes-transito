@@ -21,6 +21,7 @@ import br.com.pucgo.appTrafficViolations.models.TrafficViolation;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiClient;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceTrafficViolation;
 import br.com.pucgo.appTrafficViolations.ui.adapter.TrafficViolationListAdapter;
+import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,6 +60,7 @@ public class ListTrafficViolation extends AppCompatActivity  {
             @Override
             public void onFailure(Call<List<TrafficViolation>> call, Throwable t) {
                 Log.d("TAG", ""+t.toString());
+                GenerateToast.createLongToast(ListTrafficViolation.this, "Algum erro de servidor ocorreu! Aguarde..");
             }
         });
 

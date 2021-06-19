@@ -6,10 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.ListTrafficViolation">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerView_listViolations"/>
+        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_listViolations"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

@@ -68,6 +68,7 @@ public class TrafficViolationListAdapter extends RecyclerView.Adapter<TrafficVio
         holder.distance.setText(String.valueOf(trafficViolations.get(position).getViolationDistance()).concat(" m"));
         holder.price.setText("R$ ".concat(String.valueOf(trafficViolations.get(position).getProposalAmountTrafficTicket())));
         Picasso.get().load(trafficViolations.get(position).getPhoto()).into(holder.photo);
+
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

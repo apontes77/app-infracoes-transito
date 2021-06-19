@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.InsertTrafficViolation">
+    tools:context=".ui.EditViolation">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -91,7 +91,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
-            android:id="@+id/imageView_loadImage_toInsert"
+            android:id="@+id/imageView_loadImage"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_width="150dp"
