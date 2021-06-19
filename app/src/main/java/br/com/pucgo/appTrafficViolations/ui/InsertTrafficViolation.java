@@ -1,8 +1,11 @@
 package br.com.pucgo.appTrafficViolations.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.gson.Gson;
 
@@ -31,6 +36,7 @@ import br.com.pucgo.appTrafficViolations.R;
 import br.com.pucgo.appTrafficViolations.models.TrafficViolation;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiClient;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceTrafficViolation;
+import br.com.pucgo.appTrafficViolations.utilities.ErrorActivity;
 import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -41,6 +47,7 @@ import retrofit2.Response;
 
 public class InsertTrafficViolation extends AppCompatActivity {
 
+    private static final int PICK_FROM_GALLERY = 1;
     private RestApiInterfaceTrafficViolation apiServiceViolation;
     private EditText ed_title;
     private EditText ed_description;
@@ -50,6 +57,7 @@ public class InsertTrafficViolation extends AppCompatActivity {
     private ImageView iv_imageToSend;
     private Button btn_loadImage;
     private Button btn_sendViolation;
+    File imageFile;
     String currentPhotoPath;
 
     @Override
@@ -69,16 +77,21 @@ public class InsertTrafficViolation extends AppCompatActivity {
         btn_sendViolation = findViewById(R.id.button_sendViolation);
 
         btn_loadImage.setOnClickListener(v -> {
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(galleryIntent, 0);
-        });
+                    try {
+                        if (ActivityCompat.checkSelfPermission(InsertTrafficViolation.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(InsertTrafficViolation.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_FROM_GALLERY);
+                        } else {
+                            Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(galleryIntent, PICK_FROM_GALLERY);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
         btn_sendViolation.setOnClickListener(v -> {
-            try {
-                makeCallToInsert();
-            } catch (IOException e) {
+            try{ makeCallToInsert();}
+            catch (IOException e) {
                 e.printStackTrace();
             }
         });
@@ -90,15 +103,18 @@ public class InsertTrafficViolation extends AppCompatActivity {
                 || ed_description.getText().toString().isEmpty()
                 || ed_distance.getText().toString().isEmpty()
                 || ed_date.getText().toString().isEmpty()
-                || ed_price.getText().toString().isEmpty()) {
+                || ed_price.getText().toString().isEmpty()
+                ) {
             emptyFieldsWarning();
+        } else if(iv_imageToSend.getDrawable()==null) {
+            GenerateToast.createLongToast(InsertTrafficViolation.this, "Deve ser enviada uma imagem!");
         } else {
             //cria o json da denuncia sem a imagem
             String json = returnsJsonString();
 
-            File file = new File("/storage/emulated/0/Download/traffic.jpg");
-            RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+            //File file = new File("/storage/emulated/0/Download/traffic.jpg");
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
 
             Log.v("tent", json);
             apiServiceViolation.insertTrafficViolation(
@@ -115,28 +131,35 @@ public class InsertTrafficViolation extends AppCompatActivity {
                         @Override
                         public void onFailure(@NotNull Call<Void> call, Throwable t) {
                             Log.v("LOG", t.getMessage());
-                            Intent intent = new Intent(InsertTrafficViolation.this, ListTrafficViolation.class);
+                            GenerateToast.createLongToast(InsertTrafficViolation.this, "Algum erro ocorreu! Atualize esta tela :-) ");
+                            Intent intent = new Intent(InsertTrafficViolation.this, ErrorActivity.class);
                             startActivity(intent);
                         }
                     });
         }
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "png_" + timeStamp + "_";
-        File storageDir = new File("/storage/emulated/0/Download/");
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".png",         /* suffix */
-                storageDir      /* directory */
-        );
+    public String getRealPathFromURIForGallery(Uri uri) {
+        if (uri == null) {
+            return null;
+        }
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = this.getContentResolver().query(uri, projection, null,
+                null, null);
+        if (cursor != null) {
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        assert false;
+        cursor.close();
+        return uri.getPath();
+    }
 
-        Log.d("NOME ==>", storageDir.toString());
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
+    private File createImageFile(String name) throws IOException {
+        // Create an image file name
+       return new File(name);
     }
 
     private void emptyFieldsWarning() {
@@ -185,8 +208,10 @@ public class InsertTrafficViolation extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (requestCode == 0 && resultCode == RESULT_OK && data != null) {
+            if (requestCode == PICK_FROM_GALLERY && resultCode == RESULT_OK && data != null) {
                 Uri selectedImage = data.getData();
+                String selectedImagePath = getRealPathFromURIForGallery(selectedImage);
+                imageFile = createImageFile(selectedImagePath);
                 iv_imageToSend.setImageURI(selectedImage);
             }
         } catch (Exception e) {

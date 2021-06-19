@@ -24,6 +24,7 @@
             android:parentActivityName="br.com.pucgo.appTrafficViolations.ui.ListTrafficViolation"/>
         <activity android:name="br.com.pucgo.appTrafficViolations.ui.EditAndDeleteTrafficViolation" />
         <activity android:name="br.com.pucgo.appTrafficViolations.ui.RegisterActivity" />
+        <activity android:name="br.com.pucgo.appTrafficViolations.ui.EditViolation" />
         <activity android:name="br.com.pucgo.appTrafficViolations.ui.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

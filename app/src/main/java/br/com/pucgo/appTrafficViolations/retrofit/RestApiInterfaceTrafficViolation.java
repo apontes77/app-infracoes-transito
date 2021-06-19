@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -22,19 +23,17 @@ import retrofit2.http.Query;
 public interface RestApiInterfaceTrafficViolation {
 
     @Multipart
-    @POST("api/v1/traffic-violation/save")
+    @POST("api/v1/traffic-violations/")
     Call<Void> insertTrafficViolation(@Part MultipartBody.Part file, @Part("json") RequestBody json);
 
-    @DELETE("api/v1/traffic-violation/violation/{id}")
+    @DELETE("api/v1/traffic-violations/{id}")
     Call<Void> deleteTrafficViolation(@Path("id") Integer id);
 
-    @PATCH("api/v1/traffic-violation/violation")
-    Call<Void> updateTrafficViolation(@Body TrafficViolation trafficViolation);
+    @Multipart
+    @PUT("api/v1/traffic-violations")
+    Call<Void> updateTrafficViolation(@Part MultipartBody.Part file, @Part("json") RequestBody json);
 
-    @GET("api/v1/traffic-violation/all")
+    @GET("api/v1/traffic-violations")
     Call<List<TrafficViolation>> listTrafficViolations();
-
-    @GET("api/v1/traffic-violation/{id}")
-    Call<TrafficViolation> getTrafficViolationByID(@Query("id") Integer id);
 }
 

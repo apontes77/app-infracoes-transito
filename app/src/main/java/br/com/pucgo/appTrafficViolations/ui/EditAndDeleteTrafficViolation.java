@@ -84,6 +84,7 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditAndDeleteTrafficViolation.this, EditViolation.class);
+                intent.putExtra("id", id);
                 intent.putExtra("title", title);
                 intent.putExtra("description", description);
                 intent.putExtra("photo",photoReceived);

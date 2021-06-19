@@ -116,7 +116,7 @@ public class EditViolation extends AppCompatActivity {
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
             Log.v("tent", json);
-            apiServiceViolation.insertTrafficViolation(
+            apiServiceViolation.updateTrafficViolation(
                     body,
                     RequestBody.create(MediaType.parse("multipart/form-data"), json))
                     .enqueue(new Callback<Void>() {
@@ -170,6 +170,7 @@ public class EditViolation extends AppCompatActivity {
     private String returnsJsonString() {
         String title = ed_title.getText().toString();
         String description = ed_description.getText().toString();
+        Integer idToUpdate = id;
         Double distance = Double.parseDouble(ed_distance.getText().toString());
         String date = ed_date.getText().toString();
         Date dateNew = null;
@@ -181,13 +182,14 @@ public class EditViolation extends AppCompatActivity {
         Double price = Double.parseDouble(ed_price.getText().toString());
 
         assert dateNew != null;
-        final TrafficViolation violationInsert = buildViolationObject(title, description, distance, dateNew, price);
+        final TrafficViolation violationInsert = buildViolationObject(idToUpdate, title, description, distance, dateNew, price);
 
         return new Gson().toJson(violationInsert);
     }
 
-    private TrafficViolation buildViolationObject(String title, String description, Double distance, Date dateNew, Double price) {
+    private TrafficViolation buildViolationObject(Integer id, String title, String description, Double distance, Date dateNew, Double price) {
         return TrafficViolation.builder()
+                .id(id)
                 .title(title)
                 .description(description)
                 .dateTime(dateNew.toString())
