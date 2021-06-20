@@ -107,6 +107,7 @@
                 android:id="@+id/button_loadImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/customized_button"
                 android:layout_weight="1"
                 android:text="Carregar Imagem"
                 android:layout_gravity="center"/>
@@ -119,6 +120,7 @@
                 android:id="@+id/button_sendViolation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/customized_button"
                 android:layout_weight="1"
                 android:text="Enviar Infração"
                 android:layout_gravity="center"/>

@@ -119,6 +119,9 @@ public class InsertTrafficViolation extends AppCompatActivity {
         } else {
             //cria o json da denuncia sem a imagem
             String json = returnsJsonString();
+            if(imageFile == null) {
+                File file = new File("");
+            }
 
             RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
@@ -176,7 +179,6 @@ public class InsertTrafficViolation extends AppCompatActivity {
      * @throws IOException
      */
     private File createImageFile(String name) throws IOException {
-        // Create an image file name
        return new File(name);
     }
 

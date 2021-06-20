@@ -136,6 +136,7 @@
                 android:layout_height="58dp"
                 android:layout_marginStart="76dp"
                 android:layout_marginLeft="76dp"
+                android:background="@drawable/customized_button"
                 android:text="Editar"
                 app:layout_constraintBaseline_toBaselineOf="@+id/button_delete_violation"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -146,6 +147,7 @@
                 android:layout_height="58dp"
                 android:layout_marginEnd="68dp"
                 android:layout_marginRight="68dp"
+                android:background="@drawable/customized_button"
                 android:text="Excluir"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
