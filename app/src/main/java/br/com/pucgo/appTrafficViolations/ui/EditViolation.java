@@ -2,8 +2,11 @@ package br.com.pucgo.appTrafficViolations.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
@@ -15,10 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,6 +59,7 @@ public class EditViolation extends AppCompatActivity {
     private Button btn_sendViolation;
     File imageFile;
     Integer id;
+    String fileUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +94,7 @@ public class EditViolation extends AppCompatActivity {
         this.ed_price.setText(String.valueOf(price));
 
         Picasso.get().load(photoReceived).into(iv_imageToSend);
+        saveImage(photoReceived);
 
         btn_loadImage.setOnClickListener(v -> {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK,
@@ -130,6 +137,10 @@ public class EditViolation extends AppCompatActivity {
                     .enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(@NotNull Call<Void> call, Response<Void> response) {
+                            if(imageFile.exists()) {
+                                imageFile.delete();
+                            }
+
                             GenerateToast.createLongToast(EditViolation.this, "Envio realizado com sucesso!");
                             Intent intent = new Intent(EditViolation.this, ListTrafficViolation.class);
                             startActivity(intent);
@@ -152,8 +163,48 @@ public class EditViolation extends AppCompatActivity {
      * @throws IOException
      */
     private File createImageFile(String name) throws IOException {
-        // Create an image file name
         return new File(name);
+    }
+
+    /**
+     * este método serve para permitir a edição de um item de denúncia sem ter que enviar outra imagem.
+     * Ou seja, com este, é possível alterar quaisquer campos de texto e manter a imagem como está para
+     * realizar a atualização.
+     * @param url
+     */
+    public void saveImage(String url) {
+        Picasso.get().load(url).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                try {
+                    File mydir = new File(Environment.getExternalStorageDirectory() + "/Download");
+
+                    if (!mydir.exists()) {
+                        mydir.mkdirs();
+                    }
+
+                    fileUri = mydir.getAbsolutePath() + File.separator + System.currentTimeMillis() + ".jpg";
+                    FileOutputStream outputStream = new FileOutputStream(fileUri);
+
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+
+                    imageFile = new File(fileUri);
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
     }
 
     /**
