@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tudo certo!"
+            android:fontFamily="@font/jetbrains_mono_bold"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
             android:gravity="center_horizontal" />
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tudo ocorreu corretamente!"
+            android:fontFamily="@font/jetbrains_mononl_regular"
             android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -46,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/jetbrains_mono_bold"
             android:background="@drawable/button_background_success"
             android:text="Ok"
             android:textColor="@color/colorPrimaryAlert" />

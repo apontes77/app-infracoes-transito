@@ -26,6 +26,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/jetbrains_mono_bold"
             android:text="Oh não :-("
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
@@ -34,6 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/jetbrains_mononl_regular"
             android:text="Algo inesperado ocorreu..."
             android:layout_marginTop="20dp"
             android:textAlignment="center"
@@ -46,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/jetbrains_mono_bold"
             android:text="Ok"
             android:background="@drawable/button_background_failed"
             android:textColor="@color/colorSecondaryAlert" />

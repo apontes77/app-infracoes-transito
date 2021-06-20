@@ -63,11 +63,8 @@ public class TrafficViolationListAdapter extends RecyclerView.Adapter<TrafficVio
      */
     @Override
     public void onBindViewHolder(@NonNull @NotNull TrafficViolationListAdapter.ViewHolder holder, int position) {
-        holder.id.setText(String.valueOf((trafficViolations.get(position).getId())));
         holder.title.setText(trafficViolations.get(position).getTitle());
         holder.description.setText(trafficViolations.get(position).getDescription());
-        holder.distance.setText(String.valueOf(trafficViolations.get(position).getViolationDistance()).concat(" m"));
-        holder.price.setText("R$ ".concat(String.valueOf(trafficViolations.get(position).getProposalAmountTrafficTicket())));
         Picasso.get().load(trafficViolations.get(position).getPhoto()).into(holder.photo);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
@@ -105,22 +102,16 @@ public class TrafficViolationListAdapter extends RecyclerView.Adapter<TrafficVio
      * classe responsável por ser o modelo de cada item individual do RecyclerView.
      */
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView id;
         TextView title;
         TextView description;
-        TextView distance;
-        TextView price;
         ImageView photo;
         ConstraintLayout constraintLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            id = itemView.findViewById(R.id.tv_id);
             title = itemView.findViewById(R.id.tv_violation_title);
             description = itemView.findViewById(R.id.tv_violation_description);
             photo = itemView.findViewById(R.id.iv_violationImage);
-            distance = itemView.findViewById(R.id.tv_distance);
-            price = itemView.findViewById(R.id.tv_price);
             constraintLayout = itemView.findViewById(R.id.oneViolationLayout);
         }
     }

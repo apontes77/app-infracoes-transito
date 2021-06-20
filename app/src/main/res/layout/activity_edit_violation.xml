@@ -23,7 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="Título"/>
+                android:hint="Título"
+                android:fontFamily="@font/jetbrains_mononl_regular"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
@@ -39,7 +40,8 @@
                 android:hint="Descrição"
                 android:inputType="textMultiLine"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/jetbrains_mononl_regular"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
@@ -55,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
+                android:fontFamily="@font/jetbrains_mononl_regular"
                 android:hint="Distância aproximada do ocorrido"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,6 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="date"
+                android:fontFamily="@font/jetbrains_mononl_regular"
                 android:hint="Data do ocorrido"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,6 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
+                android:fontFamily="@font/jetbrains_mononl_regular"
                 android:hint="Proposta de valor para a multa"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/customized_button"
                 android:layout_weight="1"
+                android:fontFamily="@font/jetbrains_mono_bold"
                 android:text="Carregar Imagem"
                 android:layout_gravity="center"/>
 
@@ -121,6 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/customized_button"
+                android:fontFamily="@font/jetbrains_mono_bold"
                 android:layout_weight="1"
                 android:text="Enviar Infração"
                 android:layout_gravity="center"/>

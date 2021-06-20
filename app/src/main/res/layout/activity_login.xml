@@ -34,6 +34,7 @@
                         android:id="@+id/edt_Email_Login"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/jetbrains_mononl_regular"
                         android:hint="Email"
                         android:imeOptions="actionDone"
                         android:inputType="textEmailAddress" />
@@ -49,6 +50,7 @@
                         android:id="@+id/edt_Password_Login"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/jetbrains_mononl_regular"
                         android:hint="Senha"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword" />
@@ -74,6 +76,7 @@
                     android:id="@+id/btn_Login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/jetbrains_mono_bold"
                     android:background="@drawable/customized_button"
                     android:layout_weight="1"
                     android:text="Entrar" />
@@ -91,6 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
+                    android:fontFamily="@font/jetbrains_mononl_regular"
                     android:text="Não possui cadastro? Cadastre-se aqui!"
                     android:textColorLink="@color/colorPrimaryAlert" />
             </LinearLayout>

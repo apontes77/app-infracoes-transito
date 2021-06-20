@@ -34,11 +34,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="br.com.pucgo.appTrafficViolations.ui.InsertTrafficViolation">
-
-        </activity>
+        <activity android:name="br.com.pucgo.appTrafficViolations.ui.InsertTrafficViolation" />
         <activity android:name="br.com.pucgo.appTrafficViolations.ui.ListTrafficViolation" />
-        <activity android:name="br.com.pucgo.appTrafficViolations.MainActivity" />
     </application>
 
 </manifest>

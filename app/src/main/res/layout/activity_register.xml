@@ -40,6 +40,7 @@
                         android:id="@+id/edt_Email_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/jetbrains_mononl_regular"
                         android:hint="Email"
                         android:imeOptions="actionDone"
                         android:inputType="textEmailAddress" />
@@ -53,6 +54,7 @@
                         android:id="@+id/edt_cpf_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/jetbrains_mononl_regular"
                         android:hint="CPF"
                         android:imeOptions="actionDone"
                         android:inputType="text" />
@@ -68,6 +70,7 @@
                         android:id="@+id/edt_password_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/jetbrains_mononl_regular"
                         android:hint="Senha"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword" />
@@ -83,6 +86,7 @@
                         android:id="@+id/edt_repeated_password_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/jetbrains_mononl_regular"
                         android:hint="Repita a Senha"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword" />
@@ -102,6 +106,7 @@
                     android:id="@+id/btn_user_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/jetbrains_mono_bold"
                     android:text="Enviar" />
             </LinearLayout>
         </LinearLayout>
