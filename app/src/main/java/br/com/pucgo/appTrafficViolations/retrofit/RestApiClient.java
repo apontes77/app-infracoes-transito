@@ -1,5 +1,8 @@
 package br.com.pucgo.appTrafficViolations.retrofit;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -26,10 +29,15 @@ public class RestApiClient{
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .build();
 
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("dd/MM/yyyy")
+                .create();
+
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(okHttpClient)
                     .build();
         }

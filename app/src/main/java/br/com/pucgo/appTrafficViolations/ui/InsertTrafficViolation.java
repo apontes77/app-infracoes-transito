@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +47,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * classe para inserção de um item de denúncia
+ */
 public class InsertTrafficViolation extends AppCompatActivity {
 
     private static final int PICK_FROM_GALLERY = 1;
@@ -97,6 +101,10 @@ public class InsertTrafficViolation extends AppCompatActivity {
         });
     }
 
+    /**
+     * executa chamada de inserção no backend.
+     * @throws IOException
+     */
     public void makeCallToInsert() throws IOException {
 
         if (ed_title.getText().toString().isEmpty()
@@ -138,6 +146,11 @@ public class InsertTrafficViolation extends AppCompatActivity {
         }
     }
 
+    /**
+     * obtém o caminho e nome da imagem corretamente
+     * @param uri
+     * @return
+     */
     public String getRealPathFromURIForGallery(Uri uri) {
         if (uri == null) {
             return null;
@@ -156,11 +169,20 @@ public class InsertTrafficViolation extends AppCompatActivity {
         return uri.getPath();
     }
 
+    /**
+     * retorna uma instância de File.
+     * @param name
+     * @return
+     * @throws IOException
+     */
     private File createImageFile(String name) throws IOException {
         // Create an image file name
        return new File(name);
     }
 
+    /**
+     * realiza validação de campos vazios
+     */
     private void emptyFieldsWarning() {
         ed_title.setError("Insira o título");
         ed_title.requestFocus();
@@ -174,6 +196,10 @@ public class InsertTrafficViolation extends AppCompatActivity {
         ed_price.requestFocus();
     }
 
+    /**
+     * retorna o JSON a partir de um objeto TrafficViolation
+     * @return
+     */
     private String returnsJsonString() {
         String title = ed_title.getText().toString();
         String description = ed_description.getText().toString();
@@ -181,28 +207,43 @@ public class InsertTrafficViolation extends AppCompatActivity {
         String date = ed_date.getText().toString();
         Date dateNew = null;
         try{
-            dateNew = new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(date);
+            dateNew = new SimpleDateFormat("dd/MM/yyyy").parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         Double price = Double.parseDouble(ed_price.getText().toString());
 
-        assert dateNew != null;
         final TrafficViolation violationInsert = buildViolationObject(title, description, distance, dateNew, price);
-
-        return new Gson().toJson(violationInsert);
+        Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+        return gson.toJson(violationInsert);
     }
 
+
+    /**
+     * retorna uma instância de objeto TrafficViolation.
+     * @param title
+     * @param description
+     * @param distance
+     * @param dateNew
+     * @param price
+     * @return
+     */
     private TrafficViolation buildViolationObject(String title, String description, Double distance, Date dateNew, Double price) {
         return TrafficViolation.builder()
                 .title(title)
                 .description(description)
-                .dateTime(dateNew.toString())
+                .dateTime(dateNew)
                 .violationDistance(distance)
                 .proposalAmountTrafficTicket(price)
                 .build();
     }
 
+    /**
+     * é executado logo após a escolha da imagem a partir do dispositivo do usuário.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -213,7 +254,6 @@ public class InsertTrafficViolation extends AppCompatActivity {
                 imageFile = createImageFile(selectedImagePath);
                 Log.d("IMG", selectedImage.toString());
                 Picasso.get().load(selectedImage).into(iv_imageToSend);
-                //iv_imageToSend.setImageURI(selectedImage);
             }
         } catch (Exception e) {
             Log.d("IMAGE_ERROR","Alguma exceção ocorreu ao carregar a imagem no ImageView." + e.getMessage());

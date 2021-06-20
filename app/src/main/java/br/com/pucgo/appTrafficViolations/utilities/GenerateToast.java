@@ -3,6 +3,9 @@ package br.com.pucgo.appTrafficViolations.utilities;
 import android.content.Context;
 import android.widget.Toast;
 
+/**
+ * classe utilitária para criar Toast.
+ */
 public class GenerateToast {
 
     public static void createShortToast(Context context, String message) {

@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import br.com.pucgo.appTrafficViolations.R;
 
+/**
+ * tela de aviso de erro de algum processo do app
+ */
 public class ErrorActivity extends AppCompatActivity {
 
     @Override

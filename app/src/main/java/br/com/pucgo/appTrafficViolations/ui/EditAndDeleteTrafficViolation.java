@@ -15,6 +15,9 @@ import android.widget.ImageView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import br.com.pucgo.appTrafficViolations.R;
@@ -36,6 +39,7 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
     private EditText descriptionEdit;
     private EditText violationDistance;
     private EditText proposalPrice;
+    private EditText date;
     private ImageView photo;
     private Button editViolation;
     private Button deleteViolation;
@@ -55,6 +59,13 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
         String photoReceived = bundle.getString("photo");
         Double distance = bundle.getDouble("distance");
         Double price = bundle. getDouble("price");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date parse = new Date();
+        try{
+             parse = sdf.parse(date);
+        } catch (ParseException e) {
+            Log.v("DATE", e.getMessage());
+        }
 
         apiServiceViolation = RestApiClient.getClient().create(RestApiInterfaceTrafficViolation.class);
 
@@ -70,6 +81,10 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
         violationDistance.setText(String.valueOf(distance));
         violationDistance.setEnabled(false);
 
+        this.date = (EditText) findViewById(R.id.txtInputEditText_date_noEdit);
+        this.date.setText(date);
+        this.date.setEnabled(false);
+
         proposalPrice = (EditText) findViewById(R.id.txtInputEditText_proposalPrice_noEdit);
         proposalPrice.setText(String.valueOf(price));
         proposalPrice.setEnabled(false);
@@ -79,13 +94,18 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
         editViolation = (Button) findViewById(R.id.button_edit_violation);
         deleteViolation = (Button) findViewById(R.id.button_delete_violation);
 
-        tv = new TrafficViolation(id, title, description, photoReceived, date, distance, price);
+        tv = new TrafficViolation(id, title, description, photoReceived, parse, distance, price);
+
+        /**
+         * método que envia os dados de uma denúncia para tela de edição
+         */
         editViolation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditAndDeleteTrafficViolation.this, EditViolation.class);
                 intent.putExtra("id", id);
                 intent.putExtra("title", title);
+                intent.putExtra("date", date);
                 intent.putExtra("description", description);
                 intent.putExtra("photo",photoReceived);
                 intent.putExtra("distance", distance);
@@ -93,6 +113,10 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        /**
+         * método que executa a exclusão de um item de denúncia.
+         */
 
         deleteViolation.setOnClickListener(new View.OnClickListener() {
             @Override

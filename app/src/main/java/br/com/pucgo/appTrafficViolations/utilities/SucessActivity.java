@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import br.com.pucgo.appTrafficViolations.R;
 
+/**
+ * tela de aviso de sucesso de algum processo do app
+ */
 public class SucessActivity extends AppCompatActivity {
 
     @Override

@@ -30,7 +30,7 @@ public class TrafficViolation {
     @SerializedName("photo")
     private String photo;
     @SerializedName("date")
-    private String dateTime;
+    private Date dateTime;
     @SerializedName("violationDistance")
     private Double violationDistance;
     @SerializedName("proposalAmountTrafficTicket")

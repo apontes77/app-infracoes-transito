@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import br.com.pucgo.appTrafficViolations.R;
@@ -68,7 +69,7 @@ public class TrafficViolationListAdapter extends RecyclerView.Adapter<TrafficVio
         holder.distance.setText(String.valueOf(trafficViolations.get(position).getViolationDistance()).concat(" m"));
         holder.price.setText("R$ ".concat(String.valueOf(trafficViolations.get(position).getProposalAmountTrafficTicket())));
         Picasso.get().load(trafficViolations.get(position).getPhoto()).into(holder.photo);
-
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +77,7 @@ public class TrafficViolationListAdapter extends RecyclerView.Adapter<TrafficVio
                 Intent intent = new Intent(context, EditAndDeleteTrafficViolation.class);
                 intent.putExtra("id", trafficViolations.get(position).getId());
                 intent.putExtra("title", trafficViolations.get(position).getTitle());
-                intent.putExtra("date", trafficViolations.get(position).getDateTime());
+                intent.putExtra("date", formatter.format(trafficViolations.get(position).getDateTime()));
                 intent.putExtra("description", trafficViolations.get(position).getDescription());
                 intent.putExtra("photo",trafficViolations.get(position).getPhoto());
                 intent.putExtra("distance", trafficViolations.get(position).getViolationDistance());

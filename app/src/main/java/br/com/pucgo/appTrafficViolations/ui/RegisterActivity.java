@@ -42,35 +42,44 @@ public class RegisterActivity extends AppCompatActivity {
         btn_user_register.setOnClickListener(userRegister());
     }
 
+    /**
+     * valida campos de cadastro e realiza a inserção de dados de usuário no SharedPreferences
+     * @return
+     */
     @NotNull
     private View.OnClickListener userRegister() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(email_register.getText().toString().isEmpty()
-                        && cpf_register.getText().toString().isEmpty()
-                        && password_register.getText().toString().isEmpty()
-                        && repeated_password_register.getText().toString().isEmpty()) {
+                        || cpf_register.getText().toString().isEmpty()
+                        || password_register.getText().toString().isEmpty()
+                        || repeated_password_register.getText().toString().isEmpty()) {
                     email_register.requestFocus();
                     email_register.setError("Insira o email!");
                     cpf_register.requestFocus();
                     cpf_register.setError("Insira o cpf!");
                     password_register.requestFocus();
                     password_register.setError("Insira a senha!");
-                    repeated_password_register.requestFocus();
                     repeated_password_register.setError("Insira a senha");
+                    repeated_password_register.requestFocus();
                 }
-                if (UserValidations.validateEmail(email_register.getText().toString())
-                        && UserValidations.validatePassword(password_register.getText().toString(), repeated_password_register.getText().toString())
-                        && ValidateCPF.isCPF(cpf_register.getText().toString())) {
-                    insertUserPreferences();
-                } else {
-                    GenerateToast.createShortToast(getApplicationContext(), "Email ou senha inválidos! Tente novamente!");
+               else{
+                    if (UserValidations.validateEmail(email_register.getText().toString())
+                            && UserValidations.validatePassword(password_register.getText().toString(), repeated_password_register.getText().toString())
+                            && ValidateCPF.isCPF(cpf_register.getText().toString())) {
+                        insertUserPreferences();
+                    } else {
+                        GenerateToast.createShortToast(getApplicationContext(), "Email ou senha inválidos! Tente novamente!");
+                    }
                 }
             }
         };
     }
 
+    /**
+     * insere dados no SharedPreferences
+     */
     private void insertUserPreferences() {
         SharedPreferences prefs = getSharedPreferences("preferencias", MODE_PRIVATE);
         SharedPreferences.Editor ed = prefs.edit();
@@ -85,11 +94,18 @@ public class RegisterActivity extends AppCompatActivity {
         redirectsToLoginScreen();
     }
 
+    /**
+     * redireciona para tela de login
+     */
     private void redirectsToLoginScreen() {
         Intent backToLoginScreen = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(backToLoginScreen);
     }
 
+
+    /**
+     * limpa campos de texto
+     */
     public void cleanFields() {
         email_register.setText("");
         password_register.setText("");

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,10 +37,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * classe que realiza a edição de um item de infração de trânsito
+ */
 public class EditViolation extends AppCompatActivity {
 
     private RestApiInterfaceTrafficViolation apiServiceViolation;
-    private static final int PICK_FROM_GALLERY = 0;
+    private static final int PICK_FROM_GALLERY = 1;
     private EditText ed_title;
     private EditText ed_description;
     private EditText ed_distance;
@@ -100,6 +104,10 @@ public class EditViolation extends AppCompatActivity {
         });
     }
 
+    /**
+     * executa a chamada a API para atualização.
+     * @throws IOException
+     */
     public void makeCallToInsert() throws IOException {
 
         if (ed_title.getText().toString().isEmpty()
@@ -137,11 +145,22 @@ public class EditViolation extends AppCompatActivity {
         }
     }
 
+    /**
+     * retorna uma instância do tipo File para envio da imagem para o Backend.
+     * @param name
+     * @return
+     * @throws IOException
+     */
     private File createImageFile(String name) throws IOException {
         // Create an image file name
         return new File(name);
     }
 
+    /**
+     * obtém o caminho e nome correto da imagem escolhida no dispositivo do usuário.
+     * @param uri
+     * @return
+     */
     public String getRealPathFromURIForGallery(Uri uri) {
         if (uri == null) {
             return null;
@@ -160,6 +179,9 @@ public class EditViolation extends AppCompatActivity {
         return uri.getPath();
     }
 
+    /**
+     * valida campos vazios com avisos.
+     */
     private void emptyFieldsWarning() {
         ed_title.setError("Insira o título");
         ed_title.requestFocus();
@@ -173,6 +195,10 @@ public class EditViolation extends AppCompatActivity {
         ed_price.requestFocus();
     }
 
+    /**
+     * converte campos o objeto do tipo TrafficViolation para String JSON.
+     * @return
+     */
     private String returnsJsonString() {
         String title = ed_title.getText().toString();
         String description = ed_description.getText().toString();
@@ -189,21 +215,37 @@ public class EditViolation extends AppCompatActivity {
 
         assert dateNew != null;
         final TrafficViolation violationInsert = buildViolationObject(idToUpdate, title, description, distance, dateNew, price);
-
-        return new Gson().toJson(violationInsert);
+        Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+        return gson.toJson(violationInsert);
     }
 
+    /**
+     * cria um objeto do tipo TrafficViolation
+     * @param id
+     * @param title
+     * @param description
+     * @param distance
+     * @param dateNew
+     * @param price
+     * @return
+     */
     private TrafficViolation buildViolationObject(Integer id, String title, String description, Double distance, Date dateNew, Double price) {
         return TrafficViolation.builder()
                 .id(id)
                 .title(title)
                 .description(description)
-                .dateTime(dateNew.toString())
+                .dateTime(dateNew)
                 .violationDistance(distance)
                 .proposalAmountTrafficTicket(price)
                 .build();
     }
 
+    /**
+     * método executado o ato da escolha de uma imagem.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -2,6 +2,9 @@ package br.com.pucgo.appTrafficViolations.validations;
 
 import java.util.InputMismatchException;
 
+/**
+ * classe que executa validação de CPF.
+ */
 public class ValidateCPF {
 
     public static boolean isCPF(String CPF) {

@@ -17,6 +17,9 @@ import br.com.pucgo.appTrafficViolations.retrofit.RestApiClient;
 import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
 import br.com.pucgo.appTrafficViolations.validations.UserValidations;
 
+/**
+ * classe que manipula o login de usuário
+ */
 public class LoginActivity extends AppCompatActivity {
 
     public static final String NAME_PREFERENCES = "INFORMACOES_LOGIN_AUTOMATICO";
@@ -51,11 +54,17 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * redireciona o usuário para a listagem
+     */
     private void moveToListViolationsActivity() {
         Intent intent = new Intent(LoginActivity.this, ListTrafficViolation.class);
         startActivity(intent);
     }
 
+    /**
+     * busca os dados do usuários no SharedPreferences
+     */
     public void seekUserDataInPreferences() {
 
         String login = txtLogin.getText().toString();
@@ -84,6 +93,9 @@ public class LoginActivity extends AppCompatActivity {
         cleanFields();
     }
 
+    /**
+     * limpa campos de texto
+     */
     public void cleanFields() {
         txtLogin.setText("");
         txtPassword.setText("");
