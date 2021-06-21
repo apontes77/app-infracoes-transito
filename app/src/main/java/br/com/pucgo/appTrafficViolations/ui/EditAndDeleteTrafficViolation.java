@@ -64,6 +64,8 @@ public class EditAndDeleteTrafficViolation extends AppCompatActivity {
         try{
              parse = sdf.parse(date);
         } catch (ParseException e) {
+            Intent i = new Intent(getApplicationContext(), ErrorActivity.class);
+            startActivity(i);
             Log.v("DATE", e.getMessage());
         }
 

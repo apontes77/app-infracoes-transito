@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -96,6 +97,8 @@ public class InsertTrafficViolation extends AppCompatActivity {
         btn_sendViolation.setOnClickListener(v -> {
             try{ makeCallToInsert();}
             catch (IOException e) {
+                Intent i = new Intent(getApplicationContext(), ErrorActivity.class);
+                startActivity(i);
                 e.printStackTrace();
             }
         });
@@ -211,6 +214,8 @@ public class InsertTrafficViolation extends AppCompatActivity {
         try{
             dateNew = new SimpleDateFormat("dd/MM/yyyy").parse(date);
         } catch (ParseException e) {
+            Intent i = new Intent(getApplicationContext(), ErrorActivity.class);
+            startActivity(i);
             e.printStackTrace();
         }
         Double price = Double.parseDouble(ed_price.getText().toString());
@@ -258,6 +263,8 @@ public class InsertTrafficViolation extends AppCompatActivity {
                 Picasso.get().load(selectedImage).into(iv_imageToSend);
             }
         } catch (Exception e) {
+            Intent i = new Intent(getApplicationContext(), ErrorActivity.class);
+            startActivity(i);
             Log.d("IMAGE_ERROR","Alguma exceção ocorreu ao carregar a imagem no ImageView." + e.getMessage());
         }
     }

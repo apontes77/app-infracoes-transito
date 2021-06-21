@@ -34,6 +34,7 @@ import br.com.pucgo.appTrafficViolations.R;
 import br.com.pucgo.appTrafficViolations.models.TrafficViolation;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiClient;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiInterfaceTrafficViolation;
+import br.com.pucgo.appTrafficViolations.utilities.ErrorActivity;
 import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -106,6 +107,8 @@ public class EditViolation extends AppCompatActivity {
             try {
                 makeCallToInsert();
             } catch (IOException e) {
+                Intent i = new Intent(getApplicationContext(), ErrorActivity.class);
+                startActivity(i);
                 e.printStackTrace();
             }
         });
@@ -192,6 +195,8 @@ public class EditViolation extends AppCompatActivity {
 
                     imageFile = new File(fileUri);
                 } catch(IOException e) {
+                    Intent i = new Intent(getApplicationContext(), ErrorActivity.class);
+                    startActivity(i);
                     e.printStackTrace();
                 }
             }
@@ -260,6 +265,8 @@ public class EditViolation extends AppCompatActivity {
         try{
             dateNew = new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(date);
         } catch (ParseException e) {
+            Intent i = new Intent(getApplicationContext(), ErrorActivity.class);
+            startActivity(i);
             e.printStackTrace();
         }
         Double price = Double.parseDouble(ed_price.getText().toString());
@@ -308,7 +315,9 @@ public class EditViolation extends AppCompatActivity {
                 iv_imageToSend.setImageURI(selectedImage);
             }
         } catch (Exception e) {
-            Log.d("IMAGE_ERROR","Alguma exceção ocorreu ao carregar a imagem no ImageView.");
+            Intent i = new Intent(getApplicationContext(), ErrorActivity.class);
+            startActivity(i);
+            Log.d("IMAGE_ERROR","Alguma exceção ocorreu ao carregar a imagem no ImageView, sendo a mesma: --> "+e.getMessage());
         }
     }
 }
