@@ -16,6 +16,7 @@ import java.util.Random;
 import br.com.pucgo.appTrafficViolations.R;
 import br.com.pucgo.appTrafficViolations.models.User;
 import br.com.pucgo.appTrafficViolations.retrofit.RestApiClient;
+import br.com.pucgo.appTrafficViolations.utilities.ErrorActivity;
 import br.com.pucgo.appTrafficViolations.utilities.GenerateToast;
 import br.com.pucgo.appTrafficViolations.validations.UserValidations;
 import br.com.pucgo.appTrafficViolations.validations.ValidateCPF;
@@ -65,14 +66,21 @@ public class RegisterActivity extends AppCompatActivity {
                     repeated_password_register.requestFocus();
                 }
                else{
-                    if (UserValidations.validateEmail(email_register.getText().toString())
-                            && UserValidations.validatePassword(password_register.getText().toString(), repeated_password_register.getText().toString())
-                            && ValidateCPF.isCPF(cpf_register.getText().toString())) {
-                        insertUserPreferences();
-                    } else {
-                        GenerateToast.createLongToast(RegisterActivity.this,
-                                "Lembre que o email não pode ser vazio e que a senha deve ter pelo menos uma letra maiúscula, um caractere e, no mínimo, 7 caracteres.");
-                    }
+                   try {
+                       if (UserValidations.validateEmail(email_register.getText().toString())
+                               && UserValidations.validatePassword(password_register.getText().toString(), repeated_password_register.getText().toString())
+                               && ValidateCPF.isCPF(cpf_register.getText().toString())) {
+                           insertUserPreferences();
+                       } else {
+                           GenerateToast.createLongToast(RegisterActivity.this, "Senhas, CPF ou email incorretos! Tente novamente!");
+                           GenerateToast.createLongToast(RegisterActivity.this,
+                                   "Lembre que o email não pode ser vazio e que a senha deve ter pelo menos uma letra maiúscula, um caractere e, no mínimo, 7 caracteres.");
+                       }
+                    } catch (Exception e) {
+                      // redirectsToErrorScreen();
+                       GenerateToast.createLongToast(RegisterActivity.this, "Senhas ou email incorretos! Tente novamente!");
+                   }
+
                 }
             }
         };
@@ -103,6 +111,13 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(backToLoginScreen);
     }
 
+    /**
+     * redireciona para tela de erro
+     */
+    private void redirectsToErrorScreen() {
+        Intent errorScreen = new Intent(getApplicationContext(), ErrorActivity.class);
+        startActivity(errorScreen);
+    }
 
     /**
      * limpa campos de texto

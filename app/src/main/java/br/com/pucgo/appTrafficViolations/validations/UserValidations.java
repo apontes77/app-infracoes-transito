@@ -1,7 +1,12 @@
 package br.com.pucgo.appTrafficViolations.validations;
 
+import android.content.Intent;
+import android.util.Log;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import br.com.pucgo.appTrafficViolations.utilities.ErrorActivity;
 
 /**
  * VALIDA UM EMAIL COM O FORMATO MINIMO SENDO: x@x.xx.
@@ -20,20 +25,35 @@ public class UserValidations {
     private static final Pattern patternPassword = Pattern.compile(PASSWORD_PATTERN, Pattern.CASE_INSENSITIVE);
 
     public static boolean validateEmail(String email){
-        Matcher matcher = patternEmail.matcher(email);
+        Matcher matcher = null;
+        try {
+            matcher = patternEmail.matcher(email);
+        } catch (Exception e) {
+            Log.v("EXCEÇÃO_EMAIL:", ""+e.getMessage());
+        }
         return matcher.matches();
     }
 
     public static boolean validatePassword(String passwordInserted, String passwordRepeated) {
         Matcher matcher = null;
-        if(passwordInserted.equals(passwordRepeated)) {
-            matcher = patternPassword.matcher(passwordInserted);
+        try {
+            if(passwordInserted.equals(passwordRepeated)) {
+                matcher = patternPassword.matcher(passwordInserted);
+            }
+        } catch (Exception e){
+            Log.v("EXCEÇÃO_SENHA:", ""+e.getMessage());
         }
+
         return matcher.matches();
     }
 
     public static boolean validatePassword(String passwordInserted) {
-        Matcher matcher = patternPassword.matcher(passwordInserted);
+        Matcher matcher = null;
+        try {
+            matcher = patternPassword.matcher(passwordInserted);
+        } catch (Exception e) {
+            Log.v("EXCEÇÃO_SENHA:", ""+e.getMessage());
+        }
         return matcher.matches();
     }
 }
