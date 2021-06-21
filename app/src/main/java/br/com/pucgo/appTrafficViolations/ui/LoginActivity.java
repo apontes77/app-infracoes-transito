@@ -90,6 +90,9 @@ public class LoginActivity extends AppCompatActivity {
                 GenerateToast.createLongToast(LoginActivity.this, "Usuário inexistente! Tente novamente.");
             }
         }
+        else {
+            GenerateToast.createLongToast(LoginActivity.this, "Lembre que o email não pode ser vazio e que a senha deve ter pelo menos uma letra maiúscula, um caractere e, no mínimo, 7 caracteres.");
+        }
         cleanFields();
     }
 

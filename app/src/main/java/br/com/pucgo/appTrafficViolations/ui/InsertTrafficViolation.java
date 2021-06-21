@@ -122,9 +122,6 @@ public class InsertTrafficViolation extends AppCompatActivity {
         } else {
             //cria o json da denuncia sem a imagem
             String json = returnsJsonString();
-            if(imageFile == null) {
-                File file = new File("");
-            }
 
             RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
@@ -259,7 +256,7 @@ public class InsertTrafficViolation extends AppCompatActivity {
                 Uri selectedImage = data.getData();
                 String selectedImagePath = getRealPathFromURIForGallery(selectedImage);
                 imageFile = createImageFile(selectedImagePath);
-                Log.d("IMG", selectedImage.toString());
+                Log.d("IMG_SEND", selectedImage.toString());
                 Picasso.get().load(selectedImage).into(iv_imageToSend);
             }
         } catch (Exception e) {

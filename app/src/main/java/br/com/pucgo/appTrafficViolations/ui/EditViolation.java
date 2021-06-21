@@ -312,7 +312,8 @@ public class EditViolation extends AppCompatActivity {
                 Uri selectedImage = data.getData();
                 String selectedImagePath = getRealPathFromURIForGallery(selectedImage);
                 imageFile = createImageFile(selectedImagePath);
-                iv_imageToSend.setImageURI(selectedImage);
+                Log.d("IMG_UPDATE", selectedImage.toString());
+                Picasso.get().load(selectedImage).into(iv_imageToSend);
             }
         } catch (Exception e) {
             Intent i = new Intent(getApplicationContext(), ErrorActivity.class);

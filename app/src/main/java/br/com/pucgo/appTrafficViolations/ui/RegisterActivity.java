@@ -70,7 +70,8 @@ public class RegisterActivity extends AppCompatActivity {
                             && ValidateCPF.isCPF(cpf_register.getText().toString())) {
                         insertUserPreferences();
                     } else {
-                        GenerateToast.createShortToast(getApplicationContext(), "Email ou senha inválidos! Tente novamente!");
+                        GenerateToast.createLongToast(RegisterActivity.this,
+                                "Lembre que o email não pode ser vazio e que a senha deve ter pelo menos uma letra maiúscula, um caractere e, no mínimo, 7 caracteres.");
                     }
                 }
             }
